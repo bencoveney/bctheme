@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BCTheme</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        margin-top: 1rem;
+      }
+
+      .sliders {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+
+      .hsl {
+        margin-top: 1rem;
+        padding: 1rem;
+        gap: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .text-white {
+        color: white;
+      }
+
+      .text-black {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>BCTheme</h1>
+      <form class="sliders">
+        <label for="hue"> Hue (Degrees) </label>
+        <input type="range" name="hue" min="0" max="360" step="1" />
+        <label for="saturation"> Saturation (Percent) </label>
+        <input type="range" name="saturation" min="0" max="100" step="1" />
+        <label for="lightness"> Lightness (Percent) </label>
+        <input type="range" name="lightness" min="0" max="100" step="1" />
+      </form>
+      <div class="hsl">
+        <span class="text-white"></span>
+        <span class="text-black"></span>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("load", () => {
+        const hueField = document.forms[0].elements.hue;
+        const saturationField = document.forms[0].elements.saturation;
+        const lightnessField = document.forms[0].elements.lightness;
+
+        const hslBox = document.querySelector(".hsl");
+        const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
+
+        const changeListener = (event) => {
+          let hue = hueField.value;
+          let saturation = saturationField.value;
+          let lightness = lightnessField.value;
+          const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
+          hslBox.style.background = color;
+          hslLabels.forEach((element) => (element.textContent = color));
+        };
+
+        hueField.addEventListener("input", changeListener);
+        saturationField.addEventListener("input", changeListener);
+        lightnessField.addEventListener("input", changeListener);
+        changeListener();
+      });
+    </script>
+  </body>
+</html>
