@@ -53,14 +53,17 @@
       .color-tiles {
         margin-top: 1rem;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 1rem;
       }
 
       .color-tile {
-        min-width: 12rem;
+        min-width: 15rem;
         min-height: 6rem;
-        padding: 1rem;
+      }
+
+      .color-tint {
+        padding: 0.5rem 1rem;
       }
     </style>
   </head>
@@ -163,7 +166,7 @@
           );
           const y = rgbToYiq(r, g, b);
           const message = `${color} rgb(${r} ${g} ${b}) ${Math.round(
-            (y / 255) * 100
+            (y / 255) * 1000
           )}`;
           hslBox.style.background = color;
           hslLabels.forEach((element) => (element.textContent = message));
@@ -175,28 +178,52 @@
         updateFastPreview();
 
         const colorTiles = document.querySelector(".color-tiles");
-        const colorTilesList = [];
+        const colorTintsList = [];
         const tileCount = 12;
+        const tintCount = 11;
         const degPerTile = 360 / tileCount;
 
         for (let i = 0; i < tileCount; i++) {
           const tile = document.createElement("div");
           tile.classList.add("color-tile");
           colorTiles.appendChild(tile);
-          colorTilesList.push(tile);
+          const tints = [];
+          for (let j = 0; j < tintCount; j++) {
+            const tint = document.createElement("div");
+            tint.classList.add("color-tint");
+            tile.appendChild(tint);
+            tints.push(tint);
+          }
+          colorTintsList.push(tints);
         }
 
         const updateColorsPreview = () => {
-          let hue = hueField.value;
-          let saturation = saturationField.value;
-          let lightness = lightnessField.value;
+          let hue = parseInt(hueField.value);
+          let saturation = parseInt(saturationField.value);
 
-          let nextHue = parseInt(hue);
+          let nextHue = hue;
           for (let i = 0; i < tileCount; i++) {
-            const color = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
-            const colorTile = colorTilesList[i];
-            colorTile.style.background = color;
-            colorTile.textContent = color;
+            const colorTints = colorTintsList[i];
+            for (let j = 0; j < tintCount; j++) {
+              const tint = colorTints[j];
+              const lightness = 10 * j;
+              const [r, g, b] = hslToRgb(
+                nextHue / 360,
+                saturation / 100,
+                lightness / 100
+              );
+              const y = rgbToYiq(r, g, b);
+              const scaledY = Math.floor((y / 255) * 1000);
+              tint.style.background = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
+              tint.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
+              if (scaledY > 500) {
+                tint.classList.remove("text-white");
+                tint.classList.add("text-black");
+              } else {
+                tint.classList.remove("text-black");
+                tint.classList.add("text-white");
+              }
+            }
             nextHue = (nextHue + degPerTile) % 360;
           }
         };
