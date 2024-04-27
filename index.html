@@ -33,7 +33,7 @@
         gap: 0.5rem;
       }
 
-      .hsl {
+      .color-preview {
         margin-top: 1rem;
         padding: 1rem;
         gap: 1rem;
@@ -49,6 +49,19 @@
       .text-black {
         color: black;
       }
+
+      .color-tiles {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .color-tile {
+        min-width: 12rem;
+        min-height: 6rem;
+        padding: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -62,10 +75,11 @@
         <label for="lightness"> Lightness (Percent) </label>
         <input type="range" name="lightness" min="0" max="100" step="1" />
       </form>
-      <div class="hsl">
+      <div class="color-preview">
         <span class="text-white"></span>
         <span class="text-black"></span>
       </div>
+      <div class="color-tiles"></div>
     </div>
     <script>
       /**
@@ -134,10 +148,10 @@
         const saturationField = document.forms[0].elements.saturation;
         const lightnessField = document.forms[0].elements.lightness;
 
-        const hslBox = document.querySelector(".hsl");
+        const hslBox = document.querySelector(".color-preview");
         const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
 
-        const changeListener = (event) => {
+        const updateFastPreview = (event) => {
           let hue = hueField.value;
           let saturation = saturationField.value;
           let lightness = lightnessField.value;
@@ -155,10 +169,42 @@
           hslLabels.forEach((element) => (element.textContent = message));
         };
 
-        hueField.addEventListener("input", changeListener);
-        saturationField.addEventListener("input", changeListener);
-        lightnessField.addEventListener("input", changeListener);
-        changeListener();
+        hueField.addEventListener("input", updateFastPreview);
+        saturationField.addEventListener("input", updateFastPreview);
+        lightnessField.addEventListener("input", updateFastPreview);
+        updateFastPreview();
+
+        const colorTiles = document.querySelector(".color-tiles");
+        const colorTilesList = [];
+        const tileCount = 12;
+        const degPerTile = 360 / tileCount;
+
+        for (let i = 0; i < tileCount; i++) {
+          const tile = document.createElement("div");
+          tile.classList.add("color-tile");
+          colorTiles.appendChild(tile);
+          colorTilesList.push(tile);
+        }
+
+        const updateColorsPreview = () => {
+          let hue = hueField.value;
+          let saturation = saturationField.value;
+          let lightness = lightnessField.value;
+
+          let nextHue = parseInt(hue);
+          for (let i = 0; i < tileCount; i++) {
+            const color = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
+            const colorTile = colorTilesList[i];
+            colorTile.style.background = color;
+            colorTile.textContent = color;
+            nextHue = (nextHue + degPerTile) % 360;
+          }
+        };
+
+        hueField.addEventListener("change", updateColorsPreview);
+        saturationField.addEventListener("change", updateColorsPreview);
+        lightnessField.addEventListener("change", updateColorsPreview);
+        updateColorsPreview();
       });
     </script>
   </body>
