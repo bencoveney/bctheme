@@ -50,14 +50,14 @@
         color: black;
       }
 
-      .color-tiles {
+      .color-stops {
         margin-top: 1rem;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 1rem;
       }
 
-      .color-tile {
+      .color-stop {
         min-width: 15rem;
         min-height: 6rem;
       }
@@ -82,7 +82,7 @@
         <span class="text-white"></span>
         <span class="text-black"></span>
       </div>
-      <div class="color-tiles"></div>
+      <div class="color-stops"></div>
     </div>
     <script>
       /**
@@ -177,22 +177,24 @@
         lightnessField.addEventListener("input", updateFastPreview);
         updateFastPreview();
 
-        const colorTiles = document.querySelector(".color-tiles");
+        const colorStopsEl = document.querySelector(".color-stops");
         const colorTintsList = [];
-        const tileCount = 12;
-        const tintCount = 11;
-        const degPerTile = 360 / tileCount;
+        const stopCount = 12;
+        const tintTargets = [
+          50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,
+        ];
+        const degPerStop = 360 / stopCount;
 
-        for (let i = 0; i < tileCount; i++) {
-          const tile = document.createElement("div");
-          tile.classList.add("color-tile");
-          colorTiles.appendChild(tile);
+        for (let i = 0; i < stopCount; i++) {
+          const stopEl = document.createElement("div");
+          stopEl.classList.add("color-stop");
+          colorStopsEl.appendChild(stopEl);
           const tints = [];
-          for (let j = 0; j < tintCount; j++) {
-            const tint = document.createElement("div");
-            tint.classList.add("color-tint");
-            tile.appendChild(tint);
-            tints.push(tint);
+          for (let j = 0; j < tintTargets.length; j++) {
+            const tintEl = document.createElement("div");
+            tintEl.classList.add("color-tint");
+            stopEl.appendChild(tintEl);
+            tints.push(tintEl);
           }
           colorTintsList.push(tints);
         }
@@ -202,11 +204,11 @@
           let saturation = parseInt(saturationField.value);
 
           let nextHue = hue;
-          for (let i = 0; i < tileCount; i++) {
-            const colorTints = colorTintsList[i];
-            for (let j = 0; j < tintCount; j++) {
-              const tint = colorTints[j];
-              const lightness = 10 * j;
+          for (let i = 0; i < stopCount; i++) {
+            const tintEls = colorTintsList[i];
+            for (let j = 0; j < tintTargets.length; j++) {
+              const tintEl = tintEls[j];
+              const lightness = tintTargets[j] / 10;
               const [r, g, b] = hslToRgb(
                 nextHue / 360,
                 saturation / 100,
@@ -214,17 +216,17 @@
               );
               const y = rgbToYiq(r, g, b);
               const scaledY = Math.floor((y / 255) * 1000);
-              tint.style.background = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
-              tint.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
+              tintEl.style.background = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
+              tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
               if (scaledY > 500) {
-                tint.classList.remove("text-white");
-                tint.classList.add("text-black");
+                tintEl.classList.remove("text-white");
+                tintEl.classList.add("text-black");
               } else {
-                tint.classList.remove("text-black");
-                tint.classList.add("text-white");
+                tintEl.classList.remove("text-black");
+                tintEl.classList.add("text-white");
               }
             }
-            nextHue = (nextHue + degPerTile) % 360;
+            nextHue = (nextHue + degPerStop) % 360;
           }
         };
 
