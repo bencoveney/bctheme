@@ -1,3 +1,5 @@
+import { to255 } from "./math-functions.js";
+
 /**
  * https://en.wikipedia.org/wiki/HSL_color_space.
  * Assumes h, s, and l are contained in the set [0, 1] and
@@ -14,11 +16,7 @@ export function hslToRgb(h, s, l) {
     g = hueToRgb(p, q, h);
     b = hueToRgb(p, q, h - 1 / 3);
   }
-  return [
-    Math.min(Math.floor(r * 256), 255),
-    Math.min(Math.floor(g * 256), 255),
-    Math.min(Math.floor(b * 256), 255),
-  ];
+  return [to255(r), to255(g), to255(b)];
 }
 
 function hueToRgb(p, q, t) {
