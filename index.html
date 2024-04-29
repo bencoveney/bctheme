@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://emojifavicon.dev/favicons/1f3a8.png"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://emojifavicon.dev/favicons/1f3a8.ico"
+    />
+    <title>BCTheme</title>
+    <style>
+      body,
+      html,
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      h1 {
+        color: var(--main-color);
+        margin: 1rem auto;
+      }
+
+      .picker {
+        width: 20rem;
+        height: 20rem;
+        margin: 1rem auto;
+      }
+
+      .samples {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+      }
+
+      .sample {
+        aspect-ratio: 1;
+        background-color: grey;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <h1>BCTheme</h1>
+      <canvas class="picker"></canvas>
+      <div class="samples"></div>
+    </div>
+    <script>
+      document.documentElement.style.setProperty("--main-color", "green");
+
+      const canvas = document.querySelector(".picker");
+      const dpr = window.devicePixelRatio;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      context = canvas.getContext("2d");
+
+      for (let x = 0; x < canvas.width; x++) {
+        for (let y = 0; y < canvas.height; y++) {
+          const r = (x / canvas.width) * 255;
+          const g = (y / canvas.height) * 255;
+          const b = 0;
+          context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+          context.fillRect(x, y, 1, 1);
+        }
+      }
+
+      const samples = document.querySelector(".samples");
+      for (let i = 0; i < 12; i++) {
+        const sample = document.createElement("div");
+        samples.appendChild(sample);
+        sample.classList.add("sample", `sample-${i}`);
+      }
+    </script>
+  </body>
+</html>
