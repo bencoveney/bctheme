@@ -41,6 +41,8 @@ black and white
 
 ### Tailwind Colours:
 
+https://tailwindcss.com/docs/customizing-colors#default-color-palette
+
 - Slate, Gray, Zinc, Neutral, Stone, 50 - 950
 - Red, 50 - 950
 - Orange, 50 - 950
@@ -66,6 +68,8 @@ black and white
 black and white
 
 ### Material Design Colours:
+
+https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 
 - Red, 50 - 900 + 4\*A
 - Pink, 50 - 900 + 4\*A
@@ -108,8 +112,7 @@ black and white
 - https://github.com/morhetz/gruvbox
 - https://gogh-co.github.io/Gogh/
 - https://lospec.com/palette-list
-- https://tailwindcss.com/docs/customizing-colors#default-color-palette
-- https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 - https://en.wikipedia.org/wiki/Color_scheme#Harmonious_schemes
 - https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
 - https://www.w3.org/TR/AERT/#color-contrast
+- https://alienryderflex.com/hsp.html

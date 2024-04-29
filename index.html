@@ -75,8 +75,6 @@
         <input type="range" name="hue" min="0" max="360" step="1" />
         <label for="saturation"> Saturation (Percent) </label>
         <input type="range" name="saturation" min="0" max="100" step="1" />
-        <label for="lightness"> Lightness (Percent) </label>
-        <input type="range" name="lightness" min="0" max="100" step="1" />
       </form>
       <div class="color-preview">
         <span class="text-white"></span>
@@ -84,72 +82,18 @@
       </div>
       <div class="color-stops"></div>
     </div>
-    <script>
-      /**
-       * https://en.wikipedia.org/wiki/HSL_color_space.
-       * Assumes h, s, and l are contained in the set [0, 1] and
-       * returns r, g, and b in the set [0, 255].
-       */
-      function hslToRgb(h, s, l) {
-        let r, g, b;
-        if (s === 0) {
-          r = g = b = l;
-        } else {
-          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-          const p = 2 * l - q;
-          r = hueToRgb(p, q, h + 1 / 3);
-          g = hueToRgb(p, q, h);
-          b = hueToRgb(p, q, h - 1 / 3);
-        }
-        return [
-          Math.min(Math.floor(r * 256), 255),
-          Math.min(Math.floor(g * 256), 255),
-          Math.min(Math.floor(b * 256), 255),
-        ];
-      }
-
-      function hueToRgb(p, q, t) {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1 / 6) return p + (q - p) * 6 * t;
-        if (t < 1 / 2) return q;
-        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-        return p;
-      }
-
-      /**
-       * http://en.wikipedia.org/wiki/HSL_color_space.
-       * Assumes r, g, and b are contained in the set [0, 255] and
-       * returns h, s, and l in the set [0, 1].
-       */
-      function rgbToHsl(r, g, b) {
-        (r /= 255), (g /= 255), (b /= 255);
-        const vmax = Math.max(r, g, b),
-          vmin = Math.min(r, g, b);
-        let h,
-          s,
-          l = (vmax + vmin) / 2;
-        if (vmax === vmin) {
-          return [0, 0, l];
-        }
-        const d = vmax - vmin;
-        s = l > 0.5 ? d / (2 - vmax - vmin) : d / (vmax + vmin);
-        if (vmax === r) h = (g - b) / d + (g < b ? 6 : 0);
-        if (vmax === g) h = (b - r) / d + 2;
-        if (vmax === b) h = (r - g) / d + 4;
-        h /= 6;
-
-        return [h, s, l];
-      }
-
-      function rgbToYiq(r, g, b) {
-        return (r * 299 + g * 587 + b * 114) / 1000;
-      }
+    <script type="module">
+      import {
+        hslToRgb,
+        rgbToYiq,
+        hspToRgb,
+        rgbToHsp,
+        roundTo,
+      } from "./color-functions.js";
 
       window.addEventListener("load", () => {
         const hueField = document.forms[0].elements.hue;
         const saturationField = document.forms[0].elements.saturation;
-        const lightnessField = document.forms[0].elements.lightness;
 
         const hslBox = document.querySelector(".color-preview");
         const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
@@ -157,7 +101,7 @@
         const updateFastPreview = (event) => {
           let hue = hueField.value;
           let saturation = saturationField.value;
-          let lightness = lightnessField.value;
+          let lightness = 50;
           const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
           const [r, g, b] = hslToRgb(
             hue / 360,
@@ -174,7 +118,6 @@
 
         hueField.addEventListener("input", updateFastPreview);
         saturationField.addEventListener("input", updateFastPreview);
-        lightnessField.addEventListener("input", updateFastPreview);
         updateFastPreview();
 
         const colorStopsEl = document.querySelector(".color-stops");
@@ -208,17 +151,28 @@
             const tintEls = colorTintsList[i];
             for (let j = 0; j < tintTargets.length; j++) {
               const tintEl = tintEls[j];
-              const lightness = tintTargets[j] / 10;
-              const [r, g, b] = hslToRgb(
+              const targetTint = tintTargets[j];
+              console.log(targetTint);
+              const [r, g, b] = hspToRgb(
                 nextHue / 360,
                 saturation / 100,
-                lightness / 100
+                targetTint / 1000
               );
-              const y = rgbToYiq(r, g, b);
-              const scaledY = Math.floor((y / 255) * 1000);
-              tintEl.style.background = `hsl(${nextHue}deg ${saturation}% ${lightness}%)`;
-              tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
-              if (scaledY > 500) {
+              const [h, s, p] = rgbToHsp(r, g, b);
+              const clampedR = Math.round(r * 255);
+              const clampedG = Math.round(g * 255);
+              const clampedB = Math.round(b * 255);
+              const rbg = `rgb(${clampedR} ${clampedG} ${clampedB})`;
+              tintEl.style.background = rbg;
+              // tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
+              tintEl.innerHTML = `in(${roundTo(nextHue / 360, 2)} ${roundTo(
+                saturation / 100,
+                2
+              )} ${roundTo(targetTint / 1000, 2)})<br/>out(${roundTo(
+                h,
+                2
+              )} ${roundTo(s, 2)} ${roundTo(p, 2)})<br/>${rbg}`;
+              if (targetTint > 500) {
                 tintEl.classList.remove("text-white");
                 tintEl.classList.add("text-black");
               } else {
@@ -232,7 +186,6 @@
 
         hueField.addEventListener("change", updateColorsPreview);
         saturationField.addEventListener("change", updateColorsPreview);
-        lightnessField.addEventListener("change", updateColorsPreview);
         updateColorsPreview();
       });
     </script>
