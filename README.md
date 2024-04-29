@@ -67,7 +67,7 @@ https://tailwindcss.com/docs/customizing-colors#default-color-palette
 5 grey stops
 black and white
 
-### Material Design Colours:
+### Material Design 2 Colours:
 
 https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
 
@@ -116,3 +116,4 @@ black and white
 - https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
 - https://www.w3.org/TR/AERT/#color-contrast
 - https://alienryderflex.com/hsp.html
+- https://www.youtube.com/watch?v=fv-wlo8yVhk

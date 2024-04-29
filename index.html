@@ -65,6 +65,17 @@
       .color-tint {
         padding: 0.5rem 1rem;
       }
+
+      .reference-table {
+        margin-top: 1rem;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .reference-table th,
+      .reference-table td {
+        padding: 0.25rem 1rem;
+      }
     </style>
   </head>
   <body>
@@ -81,6 +92,17 @@
         <span class="text-black"></span>
       </div>
       <div class="color-stops"></div>
+      <table class="reference-table">
+        <thead>
+          <tr>
+            <th width="50"></th>
+            <th>Color</th>
+            <th>Tint</th>
+            <th>Hex</th>
+          </tr>
+        </thead>
+        <tbody class="reference-table-rows"></tbody>
+      </table>
     </div>
     <script type="module">
       import {
@@ -90,6 +112,10 @@
         rgbToHsp,
         roundTo,
       } from "./color-functions.js";
+      import {
+        tailwindColors,
+        materialDesignColors,
+      } from "./reference-colors.js";
 
       window.addEventListener("load", () => {
         const hueField = document.forms[0].elements.hue;
@@ -152,7 +178,6 @@
             for (let j = 0; j < tintTargets.length; j++) {
               const tintEl = tintEls[j];
               const targetTint = tintTargets[j];
-              console.log(targetTint);
               const [r, g, b] = hspToRgb(
                 nextHue / 360,
                 saturation / 100,
@@ -187,6 +212,44 @@
         hueField.addEventListener("change", updateColorsPreview);
         saturationField.addEventListener("change", updateColorsPreview);
         updateColorsPreview();
+
+        const rows = document.querySelector(".reference-table-rows");
+        function addRow(set, name, tint, hex) {
+          const row = document.createElement("tr");
+          rows.appendChild(row);
+
+          const previewCell = document.createElement("td");
+          row.appendChild(previewCell);
+          previewCell.style.backgroundColor = hex;
+
+          const setCell = document.createElement("td");
+          row.appendChild(setCell);
+          setCell.innerText = set;
+
+          const colorCell = document.createElement("td");
+          row.appendChild(colorCell);
+          colorCell.innerText = name;
+
+          const tintCell = document.createElement("td");
+          row.appendChild(tintCell);
+          tintCell.innerText = tint;
+
+          const hexCell = document.createElement("td");
+          row.appendChild(hexCell);
+          hexCell.innerText = hex;
+        }
+        Object.entries(tailwindColors).forEach(([name, hex]) => {
+          const parts = name.split("-");
+          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+          addRow("Tailwind", nameParts.join(" "), tint, hex);
+        });
+        Object.entries(materialDesignColors).forEach(([name, hex]) => {
+          const parts = name.split("-");
+          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+          addRow("Material", nameParts.join(" "), tint, hex);
+        });
       });
     </script>
   </body>
