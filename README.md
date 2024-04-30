@@ -95,6 +95,27 @@ https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colo
 1 brown stop
 black and white
 
+### Bootstrap Colours:
+
+https://getbootstrap.com/docs/5.2/customize/color/#all-colors
+
+- Blue, 100-900
+- Indigo, 100-900
+- Purple, 100-900
+- Pink, 100-900
+- Red, 100-900
+- Orange, 100-900
+- Yellow, 100-900
+- Green, 100-900
+- Teal, 100-900
+- Cyan, 100-900
+- Gray, 100-900
+- Black, White
+
+10 colour stops
+1 grey stop
+black and white
+
 ## Ideas to try
 
 - 12 colour stops - compatible with triadic/square themes

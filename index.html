@@ -115,6 +115,7 @@
       import {
         tailwindColors,
         materialDesignColors,
+        bootstrapColors,
       } from "./reference-colors.js";
 
       window.addEventListener("load", () => {
@@ -249,6 +250,12 @@
           const tint = parts.length > 1 ? parts[parts.length - 1] : "";
           const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
           addRow("Material", nameParts.join(" "), tint, hex);
+        });
+        Object.entries(bootstrapColors).forEach(([name, hex]) => {
+          const parts = name.split("-");
+          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+          addRow("Bootstrap", nameParts.join(" "), tint, hex);
         });
       });
     </script>
