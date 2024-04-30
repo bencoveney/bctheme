@@ -23,3 +23,8 @@ export function remap(inMin, inMax, outMin, outMax, value) {
 export function to255(t) {
   return Math.min(Math.floor(t * 256), 255);
 }
+
+export function roundTo(value, dp) {
+  const mult = Math.pow(10, dp);
+  return Math.round(value * mult) / mult;
+}

@@ -1,5 +1,25 @@
 import { to255 } from "./math-functions.js";
 
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+export function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+export function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+}
+
 /**
  * https://en.wikipedia.org/wiki/HSL_color_space.
  * Assumes h, s, and l are contained in the set [0, 1] and
@@ -61,6 +81,10 @@ export function rgbToYiq(r, g, b) {
 const Pr = 0.299;
 const Pg = 0.587;
 const Pb = 0.114;
+
+// const Pr = 0.241;
+// const Pg = 0.691;
+// const Pb = 0.068;
 
 export function rgbToHsp(r, g, b) {
   // Calculate the perceived brightness.
@@ -209,9 +233,4 @@ export function hspToRgb(h, s, p) {
   const b = r * h;
   const g = 0;
   return [r, g, b];
-}
-
-export function roundTo(value, dp) {
-  const mult = Math.pow(10, dp);
-  return Math.round(value * mult) / mult;
 }

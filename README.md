@@ -125,16 +125,16 @@ black and white
 
 ## References
 
-- https://github.com/bencoveney/doclooks
-- https://www.youtube.com/@acegikmo
-- https://www.youtube.com/@AdamCYounis
-  - https://www.youtube.com/watch?v=hkrK65FPmDI
+- [Doclooks project](https://github.com/bencoveney/doclooks)
+- [Freya Holmér](https://www.youtube.com/@acegikmo)
+- [Palettes & Colour - AdamCYounis](https://www.youtube.com/watch?v=hkrK65FPmDI)
   - 8 colour stops X 6 colour shades
-- https://github.com/morhetz/gruvbox
-- https://gogh-co.github.io/Gogh/
-- https://lospec.com/palette-list
+- [Gruvbox](https://github.com/morhetz/gruvbox)
+- [Command line palettes](https://gogh-co.github.io/Gogh/)
+- [Pixel art palettes](https://lospec.com/palette-list)
 - https://en.wikipedia.org/wiki/Color_scheme#Harmonious_schemes
-- https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
-- https://www.w3.org/TR/AERT/#color-contrast
-- https://alienryderflex.com/hsp.html
-- https://www.youtube.com/watch?v=fv-wlo8yVhk
+- [Determine perceived brightness of RGB color](https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color)
+- [Accessibility Evaluation And Repair Tools](https://www.w3.org/TR/AERT/#color-contrast)
+- [HSP Color Model](https://alienryderflex.com/hsp.html)
+- [Your Colors Suck - Acerola](https://www.youtube.com/watch?v=fv-wlo8yVhk)
+- [Hue Shifting in Pixel Art - BJG](https://www.youtube.com/watch?v=PNtMAxYaGyg)
