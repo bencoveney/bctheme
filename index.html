@@ -97,6 +97,7 @@
           <tr>
             <th width="50"></th>
             <th>Color</th>
+            <th>Set</th>
             <th>Tint</th>
             <th>Hex</th>
           </tr>
@@ -233,30 +234,41 @@
 
           const tintCell = document.createElement("td");
           row.appendChild(tintCell);
+          tintCell.style.textAlign = "right";
           tintCell.innerText = tint;
 
           const hexCell = document.createElement("td");
           row.appendChild(hexCell);
+          hexCell.style.fontFamily = "monospace";
           hexCell.innerText = hex;
         }
-        Object.entries(tailwindColors).forEach(([name, hex]) => {
-          const parts = name.split("-");
-          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-          addRow("Tailwind", nameParts.join(" "), tint, hex);
-        });
-        Object.entries(materialDesignColors).forEach(([name, hex]) => {
-          const parts = name.split("-");
-          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-          addRow("Material", nameParts.join(" "), tint, hex);
-        });
-        Object.entries(bootstrapColors).forEach(([name, hex]) => {
-          const parts = name.split("-");
-          const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-          const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-          addRow("Bootstrap", nameParts.join(" "), tint, hex);
-        });
+        []
+          .concat(
+            Object.entries(tailwindColors).map(([name, hex]) => {
+              const parts = name.split("-");
+              const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+              const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+              return { set: "Tailwind", name: nameParts.join(" "), tint, hex };
+            })
+          )
+          .concat(
+            Object.entries(materialDesignColors).map(([name, hex]) => {
+              const parts = name.split("-");
+              const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+              const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+              return { set: "Material", name: nameParts.join(" "), tint, hex };
+            })
+          )
+          .concat(
+            Object.entries(bootstrapColors).map(([name, hex]) => {
+              const parts = name.split("-");
+              const tint = parts.length > 1 ? parts[parts.length - 1] : "";
+              const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+              return { set: "Bootstrap", name: nameParts.join(" "), tint, hex };
+            })
+          )
+          .filter(({ tint }) => tint == 500)
+          .map(({ set, name, tint, hex }) => addRow(set, name, tint, hex));
       });
     </script>
   </body>
