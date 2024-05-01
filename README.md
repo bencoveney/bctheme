@@ -138,3 +138,5 @@ black and white
 - [HSP Color Model](https://alienryderflex.com/hsp.html)
 - [Your Colors Suck - Acerola](https://www.youtube.com/watch?v=fv-wlo8yVhk)
 - [Hue Shifting in Pixel Art - BJG](https://www.youtube.com/watch?v=PNtMAxYaGyg)
+- [Oklab color space](https://bottosson.github.io/posts/oklab/)
+- [Oklab implementation](https://github.com/Evercoder/culori/tree/main/src/oklab)

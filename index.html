@@ -124,6 +124,7 @@
         tailwindColors,
         materialDesignColors,
         bootstrapColors,
+        lospecPalettes,
       } from "./reference-colors.js";
       import { roundTo } from "./math-functions.js";
 
@@ -304,8 +305,22 @@
               return { set: "Bootstrap", name: nameParts.join(" "), tint, hex };
             })
           )
-          .filter(({ tint }) => tint == 900)
-          .map(({ set, name, tint, hex }) => addRow(set, name, tint, hex));
+          .concat(
+            Object.entries(lospecPalettes).flatMap(([palette, colors]) => {
+              return colors.map((hex, index) => {
+                return {
+                  set: palette,
+                  name: `Color ${index}`,
+                  tint: "",
+                  hex,
+                };
+              });
+            })
+          )
+          // .filter(({ tint }) => tint == 900)
+          .map(({ set, name, tint, hex }) =>
+            addRow(set, name, tint, hex.toLowerCase())
+          );
       });
     </script>
   </body>
