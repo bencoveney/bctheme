@@ -1,6 +1,7 @@
 import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
 import { culori } from "./external.js";
+import { vibrantConfig, mutedConfig, greyscaleConfig } from "./config.js";
 
 const okhslConverter = culori.converter("okhsl");
 const okhsvConverter = culori.converter("okhsv");
@@ -8,7 +9,9 @@ const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
   initPreview();
-  initPalette();
+  initPalette(document.querySelector(".palette-vibrant"), vibrantConfig);
+  initPalette(document.querySelector(".palette-muted"), mutedConfig);
+  initPalette(document.querySelector(".palette-greyscale"), greyscaleConfig);
   // initColorStops();
   initReferenceTable();
 });
@@ -46,55 +49,51 @@ function updateColorPreview(hue, saturation) {
   setTextClass(hslBox, color);
 }
 
-const stopCount = 12;
-const tintTargets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-const degPerStop = 360 / stopCount;
-const stopTargets = Array.from(Array(stopCount)).map(
-  (_, index) => degPerStop * index
-);
+function initPalette(element, config) {
+  element.style.gridTemplateColumns = `min-content repeat(${config.stops.length}, 1fr)`;
 
-const palette = document.querySelector(".palette");
-function initPalette() {
-  for (let tintIndex = 0; tintIndex < tintTargets.length; tintIndex++) {
-    const tint = tintTargets[tintIndex];
+  for (let tintIndex = 0; tintIndex < config.tints.length; tintIndex++) {
+    const tint = config.tints[tintIndex];
 
     const labelEl = document.createElement("div");
     labelEl.classList.add("palette-label");
     labelEl.innerText = tint;
-    palette.appendChild(labelEl);
+    element.appendChild(labelEl);
 
-    for (let stopIndex = 0; stopIndex < stopCount; stopIndex++) {
+    for (let stopIndex = 0; stopIndex < config.stops.length; stopIndex++) {
       const itemEl = document.createElement("div");
       itemEl.classList.add("palette-item");
-      palette.appendChild(itemEl);
+      element.appendChild(itemEl);
+    }
+  }
+
+  function updatePalette(hue, saturation) {
+    const paletteItems = element.querySelectorAll(".palette-item");
+    for (let tintIndex = 0; tintIndex < config.tints.length; tintIndex++) {
+      const tint = config.tints[tintIndex];
+
+      for (let stopIndex = 0; stopIndex < config.stops.length; stopIndex++) {
+        const stop = config.stops[stopIndex];
+
+        const paletteItem = paletteItems.item(
+          tintIndex * config.stops.length + stopIndex
+        );
+
+        const color = {
+          h: hue + stop,
+          s: saturation / 100,
+          l: tint / 1000,
+          mode: "okhsl",
+        };
+        const hex = culori.formatHex(color);
+        paletteItem.style.background = hex;
+        paletteItem.innerHTML = hex;
+        setTextClass(paletteItem, color);
+      }
     }
   }
 
   bindSliders("change", updatePalette);
-}
-
-function updatePalette(hue, saturation) {
-  const paletteItems = document.querySelectorAll(".palette-item");
-  for (let tintIndex = 0; tintIndex < tintTargets.length; tintIndex++) {
-    const tint = tintTargets[tintIndex];
-
-    for (let stopIndex = 0; stopIndex < stopCount; stopIndex++) {
-      const stop = stopTargets[stopIndex];
-
-      const paletteItem = paletteItems.item(tintIndex * stopCount + stopIndex);
-
-      const color = {
-        h: hue + stop,
-        s: saturation / 100,
-        l: tint / 1000,
-        mode: "okhsl",
-      };
-      const hex = culori.formatHex(color);
-      paletteItem.style.background = hex;
-      paletteItem.innerHTML = hex;
-      setTextClass(paletteItem, color);
-    }
-  }
 }
 
 function setTextClass(element, color) {
