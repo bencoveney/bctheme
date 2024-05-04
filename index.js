@@ -36,8 +36,8 @@ function updateColorPreview(hue, saturation) {
   const color = {
     h: hue,
     s: saturation / 100,
-    l: 0.5,
-    mode: "hsl",
+    l: 0.4,
+    mode: "okhsl",
   };
   const hex = culori.formatHex(color);
   hslBox.style.background = hex;
@@ -48,7 +48,7 @@ function updateColorPreview(hue, saturation) {
 const colorStopsEl = document.querySelector(".color-stops");
 const colorTintsList = [];
 const stopCount = 12;
-const tintTargets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+const tintTargets = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 const degPerStop = 360 / stopCount;
 function initColorStops() {
   for (let i = 0; i < stopCount; i++) {
@@ -68,9 +68,12 @@ function initColorStops() {
 }
 
 function setTextClass(element, color) {
-  const differenceWhite = culori.wcagContrast(color, "white");
-  const differenceBlack = culori.wcagContrast(color, "black");
-  if (differenceWhite > differenceBlack) {
+  // Jank - clamp saturation to prevent NAN for black.
+  const clampSat = { ...okhslConverter(color), s: 0 };
+  const differenceWhite = culori.wcagContrast(clampSat, "white");
+  const differenceBlack = culori.wcagContrast(clampSat, "black");
+  // Jank - bias towards white at the midpoint.
+  if (differenceWhite + 1 > differenceBlack) {
     element.classList.add("text-white");
     element.classList.remove("text-black");
   } else {
