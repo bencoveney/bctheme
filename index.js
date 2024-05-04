@@ -34,7 +34,7 @@ function initPreview() {
 
 const hslBox = document.querySelector(".color-preview");
 const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
-function updateColorPreview() {
+function updateColorPreview(hue, saturation) {
   let lightness = 50;
   const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
   const [r, g, b] = hslToRgb(hue / 360, saturation / 100, lightness / 100);
