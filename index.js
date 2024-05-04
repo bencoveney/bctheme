@@ -118,62 +118,6 @@ window.addEventListener("load", () => {
 
   initSliders(updateFastPreview, updateColorsPreview);
 
-  const rows = document.querySelector(".reference-table-rows");
-  function addRow(set, name, tint, hex) {
-    const row = document.createElement("tr");
-    rows.appendChild(row);
-
-    const previewCell = document.createElement("td");
-    row.appendChild(previewCell);
-    previewCell.style.backgroundColor = hex;
-
-    const setCell = document.createElement("td");
-    row.appendChild(setCell);
-    setCell.innerText = set;
-
-    const colorCell = document.createElement("td");
-    row.appendChild(colorCell);
-    colorCell.innerText = name;
-
-    const tintCell = document.createElement("td");
-    row.appendChild(tintCell);
-    tintCell.style.textAlign = "right";
-    tintCell.innerText = tint;
-
-    const hexCell = document.createElement("td");
-    row.appendChild(hexCell);
-    hexCell.style.fontFamily = "monospace";
-    hexCell.innerText = hex;
-
-    const { r, g, b } = hexToRgb(hex);
-    const [h, s, l] = rgbToHsl(r, g, b);
-
-    const hCell = document.createElement("td");
-    row.appendChild(hCell);
-    hCell.innerText = roundTo(h, 2);
-
-    const sCell = document.createElement("td");
-    row.appendChild(sCell);
-    sCell.innerText = roundTo(s, 2);
-
-    const lCell = document.createElement("td");
-    row.appendChild(lCell);
-    lCell.innerText = roundTo(l, 2);
-
-    const [hAlt, sAlt, p] = rgbToHsp(r, g, b);
-
-    const hAltCell = document.createElement("td");
-    row.appendChild(hAltCell);
-    hAltCell.innerText = roundTo(hAlt, 2);
-
-    const sAltCell = document.createElement("td");
-    row.appendChild(sAltCell);
-    sAltCell.innerText = roundTo(sAlt, 2);
-
-    const pCell = document.createElement("td");
-    row.appendChild(pCell);
-    pCell.innerText = roundTo(p / 255, 2);
-  }
   []
     .concat(
       Object.entries(tailwindColors).map(([name, hex]) => {
@@ -213,6 +157,41 @@ window.addEventListener("load", () => {
     )
     // .filter(({ tint }) => tint == 900)
     .map(({ set, name, tint, hex }) =>
-      addRow(set, name, tint, hex.toLowerCase())
+      stampReferenceTableRow(set, name, tint, hex.toLowerCase())
     );
 });
+
+const referenceTableRows = document.querySelector(".reference-table-rows");
+function stampReferenceTableCell(row, style, content) {
+  const cell = document.createElement("td");
+  Object.entries(style).forEach(([key, value]) => {
+    cell.style[key] = value;
+  });
+  if (content) {
+    cell.innerText = content;
+  }
+  row.appendChild(cell);
+}
+function stampReferenceTableRow(set, name, tint, hex) {
+  const row = document.createElement("tr");
+  referenceTableRows.appendChild(row);
+
+  stampReferenceTableCell(row, { backgroundColor: hex });
+  stampReferenceTableCell(row, {}, set);
+  stampReferenceTableCell(row, {}, name);
+  stampReferenceTableCell(row, { textAlign: "right" }, tint);
+  stampReferenceTableCell(row, { fontFamily: "monospace" }, hex);
+
+  const { r, g, b } = hexToRgb(hex);
+  const [h, s, l] = rgbToHsl(r, g, b);
+
+  stampReferenceTableCell(row, {}, roundTo(h, 2));
+  stampReferenceTableCell(row, {}, roundTo(s, 2));
+  stampReferenceTableCell(row, {}, roundTo(l, 2));
+
+  const [hAlt, sAlt, p] = rgbToHsp(r, g, b);
+
+  stampReferenceTableCell(row, {}, roundTo(hAlt, 2));
+  stampReferenceTableCell(row, {}, roundTo(sAlt, 2));
+  stampReferenceTableCell(row, {}, roundTo(p / 255, 2));
+}
