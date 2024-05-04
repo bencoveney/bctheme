@@ -167,7 +167,7 @@ function stampReferenceTableCell(row, style, content) {
   Object.entries(style).forEach(([key, value]) => {
     cell.style[key] = value;
   });
-  if (content) {
+  if (typeof content === "string" || typeof content === "number") {
     cell.innerText = content;
   }
   row.appendChild(cell);
