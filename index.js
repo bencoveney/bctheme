@@ -8,7 +8,8 @@ const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
   initPreview();
-  initColorStops();
+  initPalette();
+  // initColorStops();
   initReferenceTable();
 });
 
@@ -36,7 +37,7 @@ function updateColorPreview(hue, saturation) {
   const color = {
     h: hue,
     s: saturation / 100,
-    l: 0.4,
+    l: 0.5,
     mode: "okhsl",
   };
   const hex = culori.formatHex(color);
@@ -52,6 +53,9 @@ const tintTargets = [
   0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000,
 ];
 const degPerStop = 360 / stopCount;
+const stopTargets = Array.from(Array(stopCount)).map(
+  (_, index) => degPerStop * index
+);
 function initColorStops() {
   const labelsEl = document.createElement("div");
   labelsEl.classList.add("color-stop-labels");
@@ -79,6 +83,50 @@ function initColorStops() {
     colorTintsList.push(tints);
   }
   bindSliders("change", updateColorStops);
+}
+
+const palette = document.querySelector(".palette");
+function initPalette() {
+  for (let tintIndex = 0; tintIndex < tintTargets.length; tintIndex++) {
+    const tint = tintTargets[tintIndex];
+
+    const labelEl = document.createElement("div");
+    labelEl.classList.add("palette-label");
+    labelEl.innerText = tint;
+    palette.appendChild(labelEl);
+
+    for (let stopIndex = 0; stopIndex < stopCount; stopIndex++) {
+      const itemEl = document.createElement("div");
+      itemEl.classList.add("palette-item");
+      palette.appendChild(itemEl);
+    }
+  }
+
+  bindSliders("change", updatePalette);
+}
+
+function updatePalette(hue, saturation) {
+  const paletteItems = document.querySelectorAll(".palette-item");
+  for (let tintIndex = 0; tintIndex < tintTargets.length; tintIndex++) {
+    const tint = tintTargets[tintIndex];
+
+    for (let stopIndex = 0; stopIndex < stopCount; stopIndex++) {
+      const stop = stopTargets[stopIndex];
+
+      const paletteItem = paletteItems.item(tintIndex * stopCount + stopIndex);
+
+      const color = {
+        h: hue + stop,
+        s: saturation / 100,
+        l: tint / 1000,
+        mode: "okhsl",
+      };
+      const hex = culori.formatHex(color);
+      paletteItem.style.background = hex;
+      paletteItem.innerHTML = hex;
+      setTextClass(paletteItem, color);
+    }
+  }
 }
 
 function setTextClass(element, color) {
