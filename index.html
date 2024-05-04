@@ -35,7 +35,7 @@
       .sliders {
         margin-top: 1rem;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr min-content;
         gap: 0.5rem;
       }
 
@@ -116,7 +116,8 @@
       <h1>Playground</h1>
       <form class="sliders">
         <label for="hue">Base Hue</label>
-        <input type="range" name="hue" min="0" max="360" step="1" />
+        <input type="range" name="hue" min="0" max="360" step="1" value="257" />
+        <div class="hue-preview"></div>
         <label for="saturation-vibrant">Saturation (vibrant)</label>
         <input
           type="range"
@@ -124,7 +125,9 @@
           min="0"
           max="100"
           step="1"
+          value="61"
         />
+        <div class="saturation-vibrant-preview"></div>
         <label for="saturation-muted">Saturation (muted)</label>
         <input
           type="range"
@@ -132,14 +135,23 @@
           min="0"
           max="100"
           step="1"
+          value="10"
         />
+        <div class="saturation-muted-preview"></div>
+        <label for="saturation-greyscale">Saturation (greyscale)</label>
+        <input
+          type="range"
+          name="saturation-greyscale"
+          min="0"
+          max="100"
+          step="1"
+          value="0"
+        />
+        <div class="saturation-greyscale-preview"></div>
       </form>
       <div class="color-preview"></div>
-      <h2>Vibrant</h2>
       <div class="palette palette-vibrant"></div>
-      <h2>Muted</h2>
       <div class="palette palette-muted"></div>
-      <h2>Greyscale</h2>
       <div class="palette palette-greyscale"></div>
       <h1>Reference</h1>
       <div class="reference-filters"></div>

@@ -8,23 +8,20 @@ const okhsvConverter = culori.converter("okhsv");
 const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
-  const saturationVibrantField =
-    document.forms[0].elements["saturation-vibrant"];
-  const saturationMutedField = document.forms[0].elements["saturation-muted"];
-  initPreview(saturationVibrantField);
+  initPreview(document.forms[0].elements["saturation-vibrant"]);
   initPalette(
     document.querySelector(".palette-vibrant"),
-    saturationVibrantField,
+    document.forms[0].elements["saturation-vibrant"],
     vibrantConfig
   );
   initPalette(
     document.querySelector(".palette-muted"),
-    saturationMutedField,
+    document.forms[0].elements["saturation-muted"],
     mutedConfig
   );
   initPalette(
     document.querySelector(".palette-greyscale"),
-    saturationMutedField,
+    document.forms[0].elements["saturation-greyscale"],
     greyscaleConfig
   );
   initReferenceTable();
@@ -45,6 +42,12 @@ function bindSliders(event, handler, saturationField) {
 }
 
 function initPreview(saturationField) {
+  Object.values(document.forms[0].elements).forEach((input) => {
+    input.addEventListener("input", () => {
+      document.querySelector(`.${input.name}-preview`).innerText = input.value;
+    });
+    document.querySelector(`.${input.name}-preview`).innerText = input.value;
+  });
   bindSliders("input", updateColorPreview, saturationField);
 }
 
