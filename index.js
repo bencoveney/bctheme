@@ -8,17 +8,30 @@ const okhsvConverter = culori.converter("okhsv");
 const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
-  initPreview();
-  initPalette(document.querySelector(".palette-vibrant"), vibrantConfig);
-  initPalette(document.querySelector(".palette-muted"), mutedConfig);
-  initPalette(document.querySelector(".palette-greyscale"), greyscaleConfig);
-  // initColorStops();
+  const saturationVibrantField =
+    document.forms[0].elements["saturation-vibrant"];
+  const saturationMutedField = document.forms[0].elements["saturation-muted"];
+  initPreview(saturationVibrantField);
+  initPalette(
+    document.querySelector(".palette-vibrant"),
+    saturationVibrantField,
+    vibrantConfig
+  );
+  initPalette(
+    document.querySelector(".palette-muted"),
+    saturationMutedField,
+    mutedConfig
+  );
+  initPalette(
+    document.querySelector(".palette-greyscale"),
+    saturationMutedField,
+    greyscaleConfig
+  );
   initReferenceTable();
 });
 
-function bindSliders(event, handler) {
+function bindSliders(event, handler, saturationField) {
   const hueField = document.forms[0].elements.hue;
-  const saturationField = document.forms[0].elements.saturation;
 
   const wrapped = function () {
     let hue = parseInt(hueField.value);
@@ -31,8 +44,8 @@ function bindSliders(event, handler) {
   wrapped();
 }
 
-function initPreview() {
-  bindSliders("input", updateColorPreview);
+function initPreview(saturationField) {
+  bindSliders("input", updateColorPreview, saturationField);
 }
 
 const hslBox = document.querySelector(".color-preview");
@@ -49,7 +62,7 @@ function updateColorPreview(hue, saturation) {
   setTextClass(hslBox, color);
 }
 
-function initPalette(element, config) {
+function initPalette(element, saturationField, config) {
   element.style.gridTemplateColumns = `min-content repeat(${config.stops.length}, 1fr)`;
 
   for (let tintIndex = 0; tintIndex < config.tints.length; tintIndex++) {
@@ -93,7 +106,7 @@ function initPalette(element, config) {
     }
   }
 
-  bindSliders("change", updatePalette);
+  bindSliders("change", updatePalette, saturationField);
 }
 
 function setTextClass(element, color) {

@@ -115,10 +115,24 @@
     <div class="wrapper">
       <h1>Playground</h1>
       <form class="sliders">
-        <label for="hue"> Hue (Degrees) </label>
+        <label for="hue">Base Hue</label>
         <input type="range" name="hue" min="0" max="360" step="1" />
-        <label for="saturation"> Saturation (Percent) </label>
-        <input type="range" name="saturation" min="0" max="100" step="1" />
+        <label for="saturation-vibrant">Saturation (vibrant)</label>
+        <input
+          type="range"
+          name="saturation-vibrant"
+          min="0"
+          max="100"
+          step="1"
+        />
+        <label for="saturation-muted">Saturation (muted)</label>
+        <input
+          type="range"
+          name="saturation-muted"
+          min="0"
+          max="100"
+          step="1"
+        />
       </form>
       <div class="color-preview"></div>
       <h2>Vibrant</h2>
