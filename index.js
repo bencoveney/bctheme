@@ -1,50 +1,54 @@
 import { hslToRgb, hspToRgb, rgbToHsp } from "./color-functions.js";
 import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
+import { culori } from "./external.js";
 
-function initSliders(onInput, onChange) {
+const okhslConverter = culori.converter("okhsl");
+const okhsvConverter = culori.converter("okhsv");
+const oklchConverter = culori.converter("oklch");
+
+window.addEventListener("load", () => {
+  initPreview();
+  initColorStops();
+  initReferenceTable();
+});
+
+function bindSliders(event, handler) {
   const hueField = document.forms[0].elements.hue;
   const saturationField = document.forms[0].elements.saturation;
 
-  function wrapHandler(handler) {
-    return function () {
-      let hue = parseInt(hueField.value);
-      let saturation = parseInt(saturationField.value);
-      handler(hue, saturation);
-    };
-  }
-
-  const onInputWrapped = wrapHandler(onInput);
-  const onChangeWrapped = wrapHandler(onChange);
-
-  hueField.addEventListener("input", onInputWrapped);
-  saturationField.addEventListener("input", onInputWrapped);
-  onInputWrapped();
-
-  hueField.addEventListener("change", onChangeWrapped);
-  saturationField.addEventListener("change", onChangeWrapped);
-  onChangeWrapped();
-}
-
-window.addEventListener("load", () => {
-  const hslBox = document.querySelector(".color-preview");
-  const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
-
-  const updateFastPreview = (hue, saturation) => {
-    let lightness = 50;
-    const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
-    const [r, g, b] = hslToRgb(hue / 360, saturation / 100, lightness / 100);
-    const message = `${color} rgb(${r} ${g} ${b})`;
-    hslBox.style.background = color;
-    hslLabels.forEach((element) => (element.textContent = message));
+  const wrapped = function () {
+    let hue = parseInt(hueField.value);
+    let saturation = parseInt(saturationField.value);
+    handler(hue, saturation);
   };
 
-  const colorStopsEl = document.querySelector(".color-stops");
-  const colorTintsList = [];
-  const stopCount = 12;
-  const tintTargets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-  const degPerStop = 360 / stopCount;
+  hueField.addEventListener(event, wrapped);
+  saturationField.addEventListener(event, wrapped);
+  wrapped();
+}
 
+function initPreview() {
+  bindSliders("input", updateColorPreview);
+}
+
+const hslBox = document.querySelector(".color-preview");
+const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
+function updateColorPreview() {
+  let lightness = 50;
+  const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
+  const [r, g, b] = hslToRgb(hue / 360, saturation / 100, lightness / 100);
+  const message = `${color} rgb(${r} ${g} ${b})`;
+  hslBox.style.background = color;
+  hslLabels.forEach((element) => (element.textContent = message));
+}
+
+const colorStopsEl = document.querySelector(".color-stops");
+const colorTintsList = [];
+const stopCount = 12;
+const tintTargets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+const degPerStop = 360 / stopCount;
+function initColorStops() {
   for (let i = 0; i < stopCount; i++) {
     const stopEl = document.createElement("div");
     stopEl.classList.add("color-stop");
@@ -58,49 +62,50 @@ window.addEventListener("load", () => {
     }
     colorTintsList.push(tints);
   }
+  bindSliders("change", updateColorStops);
+}
 
-  const updateColorsPreview = (hue, saturation) => {
-    let nextHue = hue;
-    for (let i = 0; i < stopCount; i++) {
-      const tintEls = colorTintsList[i];
-      for (let j = 0; j < tintTargets.length; j++) {
-        const tintEl = tintEls[j];
-        const targetTint = tintTargets[j];
-        const [r, g, b] = hspToRgb(
-          nextHue / 360,
-          saturation / 100,
-          targetTint / 1000
-        );
-        const [h, s, p] = rgbToHsp(r, g, b);
-        const clampedR = Math.round(r * 255);
-        const clampedG = Math.round(g * 255);
-        const clampedB = Math.round(b * 255);
-        const rbg = `rgb(${clampedR} ${clampedG} ${clampedB})`;
-        tintEl.style.background = rbg;
-        // tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
-        tintEl.innerHTML = `in(${roundTo(nextHue / 360, 2)} ${roundTo(
-          saturation / 100,
-          2
-        )} ${roundTo(targetTint / 1000, 2)})<br/>out(${roundTo(h, 2)} ${roundTo(
-          s,
-          2
-        )} ${roundTo(p, 2)})<br/>${rbg}`;
-        if (targetTint > 500) {
-          tintEl.classList.remove("text-white");
-          tintEl.classList.add("text-black");
-        } else {
-          tintEl.classList.remove("text-black");
-          tintEl.classList.add("text-white");
-        }
+function updateColorStops(hue, saturation) {
+  let nextHue = hue;
+  for (let i = 0; i < stopCount; i++) {
+    const tintEls = colorTintsList[i];
+    for (let j = 0; j < tintTargets.length; j++) {
+      const tintEl = tintEls[j];
+      const targetTint = tintTargets[j];
+      const [r, g, b] = hspToRgb(
+        nextHue / 360,
+        saturation / 100,
+        targetTint / 1000
+      );
+      const [h, s, p] = rgbToHsp(r, g, b);
+      const clampedR = Math.round(r * 255);
+      const clampedG = Math.round(g * 255);
+      const clampedB = Math.round(b * 255);
+      const rbg = `rgb(${clampedR} ${clampedG} ${clampedB})`;
+      tintEl.style.background = rbg;
+      // tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
+      tintEl.innerHTML = `in(${roundTo(nextHue / 360, 2)} ${roundTo(
+        saturation / 100,
+        2
+      )} ${roundTo(targetTint / 1000, 2)})<br/>out(${roundTo(h, 2)} ${roundTo(
+        s,
+        2
+      )} ${roundTo(p, 2)})<br/>${rbg}`;
+      if (targetTint > 500) {
+        tintEl.classList.remove("text-white");
+        tintEl.classList.add("text-black");
+      } else {
+        tintEl.classList.remove("text-black");
+        tintEl.classList.add("text-white");
       }
-      nextHue = (nextHue + degPerStop) % 360;
     }
-  };
+    nextHue = (nextHue + degPerStop) % 360;
+  }
+}
 
-  initSliders(updateFastPreview, updateColorsPreview);
-
+function initReferenceTable() {
   references.filter(({ tint }) => tint == 500).map(stampReferenceTableRow);
-});
+}
 
 const referenceTableRows = document.querySelector(".reference-table-rows");
 function stampReferenceTableCell(row, style, content) {
@@ -118,10 +123,6 @@ function stampReferenceTableCell(row, style, content) {
   row.appendChild(cell);
 }
 
-import { culori } from "./external.js";
-const okhslConverter = culori.converter("okhsl");
-const okhsvConverter = culori.converter("okhsv");
-const oklchConverter = culori.converter("oklch");
 function stampReferenceTableRow(color) {
   const { set, name, tint, hex, parsed } = color;
 
