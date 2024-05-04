@@ -56,15 +56,21 @@
       .color-stops {
         margin-top: 1rem;
         display: grid;
-        grid-template-columns: repeat(12, 1fr);
+        grid-template-columns: repeat(13, 1fr);
+      }
+
+      .color-stop,
+      .color-stop-labels {
+        min-width: 5rem;
+        min-height: 6rem;
         font-family: monospace;
       }
 
-      .color-stop {
-        min-width: 5rem;
-        min-height: 6rem;
+      .color-stop-labels {
+        text-align: right;
       }
 
+      .color-tint-label,
       .color-tint {
         padding: 0.5rem 1rem;
       }
@@ -78,6 +84,33 @@
       .reference-table th,
       .reference-table td {
         padding: 0.25rem 1rem;
+      }
+
+      .reference-filters {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .reference-filters button {
+        padding: 0.25rem;
+      }
+
+      .filter-100 tr {
+        display: none;
+      }
+      .filter-100 tr.reference-tint-100 {
+        display: table-row;
+      }
+      .filter-500 tr {
+        display: none;
+      }
+      .filter-500 tr.reference-tint-500 {
+        display: table-row;
+      }
+      .filter-900 tr {
+        display: none;
+      }
+      .filter-900 tr.reference-tint-900 {
+        display: table-row;
       }
     </style>
   </head>
@@ -96,6 +129,7 @@
       </div>
       <div class="color-stops"></div>
       <h1>Reference</h1>
+      <div class="reference-filters"></div>
       <table class="reference-table">
         <thead>
           <tr>

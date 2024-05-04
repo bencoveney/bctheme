@@ -48,13 +48,27 @@ function updateColorPreview(hue, saturation) {
 const colorStopsEl = document.querySelector(".color-stops");
 const colorTintsList = [];
 const stopCount = 12;
-const tintTargets = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+const tintTargets = [
+  0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000,
+];
 const degPerStop = 360 / stopCount;
 function initColorStops() {
+  const labelsEl = document.createElement("div");
+  labelsEl.classList.add("color-stop-labels");
+  colorStopsEl.appendChild(labelsEl);
+
+  for (let j = 0; j < tintTargets.length; j++) {
+    const labelEl = document.createElement("div");
+    labelEl.classList.add("color-tint-label");
+    labelEl.innerText = tintTargets[j];
+    labelsEl.appendChild(labelEl);
+  }
+
   for (let i = 0; i < stopCount; i++) {
     const stopEl = document.createElement("div");
     stopEl.classList.add("color-stop");
     colorStopsEl.appendChild(stopEl);
+
     const tints = [];
     for (let j = 0; j < tintTargets.length; j++) {
       const tintEl = document.createElement("div");
@@ -106,6 +120,10 @@ function updateColorStops(hue, saturation) {
 
 function initReferenceTable() {
   references.map(stampReferenceTableRow);
+  stampFilterButton("all");
+  stampFilterButton("100");
+  stampFilterButton("500");
+  stampFilterButton("900");
 }
 
 const referenceTableRows = document.querySelector(".reference-table-rows");
@@ -129,6 +147,9 @@ function stampReferenceTableRow(color) {
   const { set, name, tint, hex, parsed } = color;
 
   const row = document.createElement("tr");
+  if (tint) {
+    row.classList.add(`reference-tint-${tint}`);
+  }
   referenceTableRows.appendChild(row);
 
   const preview = stampReferenceTableCell(
@@ -157,4 +178,18 @@ function stampReferenceTableRow(color) {
 
   stampReferenceTableCell(row, {}, oklch.l);
   stampReferenceTableCell(row, {}, oklch.c);
+}
+
+const referenceFilters = document.querySelector(".reference-filters");
+function stampFilterButton(filter) {
+  const button = document.createElement("button");
+  button.innerText = `Filter to ${filter}`;
+  referenceFilters.appendChild(button);
+
+  button.addEventListener("click", () => {
+    Array.from(referenceTableRows.classList.values())
+      .filter((className) => className.startsWith("filter"))
+      .forEach((className) => referenceTableRows.classList.remove(className));
+    referenceTableRows.classList.add(`filter-${filter}`);
+  });
 }
