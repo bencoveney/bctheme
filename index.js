@@ -105,7 +105,7 @@ function updateColorStops(hue, saturation) {
 }
 
 function initReferenceTable() {
-  references.filter(({ tint }) => tint == 500).map(stampReferenceTableRow);
+  references.map(stampReferenceTableRow);
 }
 
 const referenceTableRows = document.querySelector(".reference-table-rows");
@@ -122,6 +122,7 @@ function stampReferenceTableCell(row, style, content) {
     cell.innerText = "-";
   }
   row.appendChild(cell);
+  return cell;
 }
 
 function stampReferenceTableRow(color) {
@@ -130,11 +131,16 @@ function stampReferenceTableRow(color) {
   const row = document.createElement("tr");
   referenceTableRows.appendChild(row);
 
-  stampReferenceTableCell(row, { backgroundColor: hex }, "");
+  const preview = stampReferenceTableCell(
+    row,
+    { backgroundColor: hex, fontFamily: "monospace" },
+    hex
+  );
+  setTextClass(preview, parsed);
+
   stampReferenceTableCell(row, {}, set);
   stampReferenceTableCell(row, {}, name);
   stampReferenceTableCell(row, { textAlign: "right" }, tint);
-  stampReferenceTableCell(row, { fontFamily: "monospace" }, hex);
 
   const okhsl = okhslConverter(parsed);
 
