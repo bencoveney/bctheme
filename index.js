@@ -1,4 +1,3 @@
-import { hslToRgb, hspToRgb, rgbToHsp } from "./color-functions.js";
 import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
 import { culori } from "./external.js";
@@ -35,11 +34,16 @@ function initPreview() {
 const hslBox = document.querySelector(".color-preview");
 const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
 function updateColorPreview(hue, saturation) {
-  let lightness = 50;
-  const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
-  const [r, g, b] = hslToRgb(hue / 360, saturation / 100, lightness / 100);
-  const message = `${color} rgb(${r} ${g} ${b})`;
-  hslBox.style.background = color;
+  const color = {
+    h: hue,
+    s: saturation / 100,
+    l: 0.5,
+    mode: "hsl",
+  };
+  const hsl = culori.formatHsl(color);
+  const rgb = culori.formatRgb(color);
+  const message = `${hsl} ${rgb}`;
+  hslBox.style.background = rgb;
   hslLabels.forEach((element) => (element.textContent = message));
 }
 
@@ -65,6 +69,18 @@ function initColorStops() {
   bindSliders("change", updateColorStops);
 }
 
+function setTextClass(element, color) {
+  const differenceWhite = culori.wcagContrast(color, "white");
+  const differenceBlack = culori.wcagContrast(color, "black");
+  if (differenceWhite > differenceBlack) {
+    element.classList.add("text-white");
+    element.classList.remove("text-black");
+  } else {
+    element.classList.add("text-black");
+    element.classList.remove("text-white");
+  }
+}
+
 function updateColorStops(hue, saturation) {
   let nextHue = hue;
   for (let i = 0; i < stopCount; i++) {
@@ -72,32 +88,16 @@ function updateColorStops(hue, saturation) {
     for (let j = 0; j < tintTargets.length; j++) {
       const tintEl = tintEls[j];
       const targetTint = tintTargets[j];
-      const [r, g, b] = hspToRgb(
-        nextHue / 360,
-        saturation / 100,
-        targetTint / 1000
-      );
-      const [h, s, p] = rgbToHsp(r, g, b);
-      const clampedR = Math.round(r * 255);
-      const clampedG = Math.round(g * 255);
-      const clampedB = Math.round(b * 255);
-      const rbg = `rgb(${clampedR} ${clampedG} ${clampedB})`;
-      tintEl.style.background = rbg;
-      // tintEl.textContent = `hsl(${nextHue}deg ${saturation}% ${lightness}%) ${scaledY}`;
-      tintEl.innerHTML = `in(${roundTo(nextHue / 360, 2)} ${roundTo(
-        saturation / 100,
-        2
-      )} ${roundTo(targetTint / 1000, 2)})<br/>out(${roundTo(h, 2)} ${roundTo(
-        s,
-        2
-      )} ${roundTo(p, 2)})<br/>${rbg}`;
-      if (targetTint > 500) {
-        tintEl.classList.remove("text-white");
-        tintEl.classList.add("text-black");
-      } else {
-        tintEl.classList.remove("text-black");
-        tintEl.classList.add("text-white");
-      }
+      const color = {
+        h: nextHue,
+        s: saturation / 100,
+        l: targetTint / 1000,
+        mode: "okhsl",
+      };
+      const hex = culori.formatHex(color);
+      tintEl.style.background = hex;
+      tintEl.innerHTML = hex;
+      setTextClass(tintEl, color);
     }
     nextHue = (nextHue + degPerStop) % 360;
   }

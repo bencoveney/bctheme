@@ -23,7 +23,8 @@
       }
 
       h1 {
-        margin-top: 1rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
       }
 
       .sliders {
@@ -53,12 +54,12 @@
       .color-stops {
         margin-top: 1rem;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(12, 1fr);
+        font-family: monospace;
       }
 
       .color-stop {
-        min-width: 15rem;
+        min-width: 5rem;
         min-height: 6rem;
       }
 
@@ -80,7 +81,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <h1>BCTheme</h1>
+      <h1>Playground</h1>
       <form class="sliders">
         <label for="hue"> Hue (Degrees) </label>
         <input type="range" name="hue" min="0" max="360" step="1" />
@@ -92,6 +93,7 @@
         <span class="text-black"></span>
       </div>
       <div class="color-stops"></div>
+      <h1>Reference</h1>
       <table class="reference-table">
         <thead>
           <tr>
