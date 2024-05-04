@@ -46,44 +46,12 @@ function updateColorPreview(hue, saturation) {
   setTextClass(hslBox, color);
 }
 
-const colorStopsEl = document.querySelector(".color-stops");
-const colorTintsList = [];
 const stopCount = 12;
-const tintTargets = [
-  0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000,
-];
+const tintTargets = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const degPerStop = 360 / stopCount;
 const stopTargets = Array.from(Array(stopCount)).map(
   (_, index) => degPerStop * index
 );
-function initColorStops() {
-  const labelsEl = document.createElement("div");
-  labelsEl.classList.add("color-stop-labels");
-  colorStopsEl.appendChild(labelsEl);
-
-  for (let j = 0; j < tintTargets.length; j++) {
-    const labelEl = document.createElement("div");
-    labelEl.classList.add("color-tint-label");
-    labelEl.innerText = tintTargets[j];
-    labelsEl.appendChild(labelEl);
-  }
-
-  for (let i = 0; i < stopCount; i++) {
-    const stopEl = document.createElement("div");
-    stopEl.classList.add("color-stop");
-    colorStopsEl.appendChild(stopEl);
-
-    const tints = [];
-    for (let j = 0; j < tintTargets.length; j++) {
-      const tintEl = document.createElement("div");
-      tintEl.classList.add("color-tint");
-      stopEl.appendChild(tintEl);
-      tints.push(tintEl);
-    }
-    colorTintsList.push(tints);
-  }
-  bindSliders("change", updateColorStops);
-}
 
 const palette = document.querySelector(".palette");
 function initPalette() {
@@ -141,28 +109,6 @@ function setTextClass(element, color) {
   } else {
     element.classList.add("text-black");
     element.classList.remove("text-white");
-  }
-}
-
-function updateColorStops(hue, saturation) {
-  let nextHue = hue;
-  for (let i = 0; i < stopCount; i++) {
-    const tintEls = colorTintsList[i];
-    for (let j = 0; j < tintTargets.length; j++) {
-      const tintEl = tintEls[j];
-      const targetTint = tintTargets[j];
-      const color = {
-        h: nextHue,
-        s: saturation / 100,
-        l: targetTint / 1000,
-        mode: "okhsl",
-      };
-      const hex = culori.formatHex(color);
-      tintEl.style.background = hex;
-      tintEl.innerHTML = hex;
-      setTextClass(tintEl, color);
-    }
-    nextHue = (nextHue + degPerStop) % 360;
   }
 }
 
