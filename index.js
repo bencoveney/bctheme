@@ -1,11 +1,4 @@
-import {
-  hslToRgb,
-  rgbToYiq,
-  hspToRgb,
-  rgbToHsl,
-  rgbToHsp,
-  hexToRgb,
-} from "./color-functions.js";
+import { hslToRgb, hspToRgb, rgbToHsp } from "./color-functions.js";
 import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
 
@@ -41,10 +34,7 @@ window.addEventListener("load", () => {
     let lightness = 50;
     const color = `hsl(${hue}deg ${saturation}% ${lightness}%)`;
     const [r, g, b] = hslToRgb(hue / 360, saturation / 100, lightness / 100);
-    const y = rgbToYiq(r, g, b);
-    const message = `${color} rgb(${r} ${g} ${b}) ${Math.round(
-      (y / 255) * 1000
-    )}`;
+    const message = `${color} rgb(${r} ${g} ${b})`;
     hslBox.style.background = color;
     hslLabels.forEach((element) => (element.textContent = message));
   };

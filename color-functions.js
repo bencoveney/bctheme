@@ -1,25 +1,5 @@
 import { to255 } from "./math-functions.js";
 
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
-export function rgbToHex(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
-export function hexToRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-}
-
 /**
  * https://en.wikipedia.org/wiki/HSL_color_space.
  * Assumes h, s, and l are contained in the set [0, 1] and
@@ -46,36 +26,6 @@ function hueToRgb(p, q, t) {
   if (t < 1 / 2) return q;
   if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
   return p;
-}
-
-/**
- * http://en.wikipedia.org/wiki/HSL_color_space.
- * Assumes r, g, and b are contained in the set [0, 255] and
- * returns h, s, and l in the set [0, 1].
- */
-export function rgbToHsl(r, g, b) {
-  (r /= 255), (g /= 255), (b /= 255);
-  const vmax = Math.max(r, g, b),
-    vmin = Math.min(r, g, b);
-  let h,
-    s,
-    l = (vmax + vmin) / 2;
-  if (vmax === vmin) {
-    return [0, 0, l];
-  }
-  const d = vmax - vmin;
-  s = l > 0.5 ? d / (2 - vmax - vmin) : d / (vmax + vmin);
-  if (vmax === r) h = (g - b) / d + (g < b ? 6 : 0);
-  if (vmax === g) h = (b - r) / d + 2;
-  if (vmax === b) h = (r - g) / d + 4;
-  h /= 6;
-
-  return [h, s, l];
-}
-
-export function rgbToYiq(r, g, b) {
-  const scaled = r * 299 + g * 587 + b * 114;
-  return scaled / 1000;
 }
 
 const Pr = 0.299;
