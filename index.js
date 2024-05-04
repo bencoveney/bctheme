@@ -32,7 +32,6 @@ function initPreview() {
 }
 
 const hslBox = document.querySelector(".color-preview");
-const hslLabels = hslBox.querySelectorAll(".text-white, .text-black");
 function updateColorPreview(hue, saturation) {
   const color = {
     h: hue,
@@ -40,11 +39,10 @@ function updateColorPreview(hue, saturation) {
     l: 0.5,
     mode: "hsl",
   };
-  const hsl = culori.formatHsl(color);
-  const rgb = culori.formatRgb(color);
-  const message = `${hsl} ${rgb}`;
-  hslBox.style.background = rgb;
-  hslLabels.forEach((element) => (element.textContent = message));
+  const hex = culori.formatHex(color);
+  hslBox.style.background = hex;
+  hslBox.innerText = hex;
+  setTextClass(hslBox, color);
 }
 
 const colorStopsEl = document.querySelector(".color-stops");
