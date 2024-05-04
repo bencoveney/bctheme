@@ -1,4 +1,4 @@
-export const tailwindColors = {
+const tailwindColors = Object.entries({
   black: "#000000",
   white: "#ffffff",
   "slate-50": "#f8fafc",
@@ -243,9 +243,19 @@ export const tailwindColors = {
   "rose-800": "#9f1239",
   "rose-900": "#881337",
   "rose-950": "#4c0519",
-};
+}).map(([name, hex]) => {
+  const parts = name.split("-");
+  const tint = parts.length > 1 ? parts[parts.length - 1] : undefined;
+  const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+  return {
+    set: "Tailwind",
+    name: nameParts.join(" "),
+    tint,
+    hex,
+  };
+});
 
-export const materialDesignColors = {
+const materialDesignColors = Object.entries({
   "red-50": "#FFEBEE",
   "red-100": "#FFCDD2",
   "red-200": "#EF9A9A",
@@ -488,9 +498,19 @@ export const materialDesignColors = {
   "blue-grey-900": "#263238",
   black: "#000000",
   white: "#FFFFFF",
-};
+}).map(([name, hex]) => {
+  const parts = name.split("-");
+  const tint = parts.length > 1 ? parts[parts.length - 1] : undefined;
+  const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+  return {
+    set: "Material",
+    name: nameParts.join(" "),
+    tint,
+    hex,
+  };
+});
 
-export const bootstrapColors = {
+const bootstrapColors = Object.entries({
   "blue-100": "#cfe2ff",
   "blue-200": "#9ec5fe",
   "blue-300": "#6ea8fe",
@@ -592,9 +612,19 @@ export const bootstrapColors = {
   "gray-900": "#212529",
   white: "#ffffff",
   black: "#000000",
-};
+}).map(([name, hex]) => {
+  const parts = name.split("-");
+  const tint = parts.length > 1 ? parts[parts.length - 1] : undefined;
+  const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+  return {
+    set: "Bootstrap",
+    name: nameParts.join(" "),
+    tint,
+    hex,
+  };
+});
 
-export const lospecPalettes = {
+const lospecPalettes = Object.entries({
   pico8: [
     // https://lospec.com/palette-list/pico-8
     "#000000",
@@ -756,4 +786,25 @@ export const lospecPalettes = {
     "#c7cfcc",
     "#ebede9",
   ],
-};
+}).flatMap(([palette, colors]) => {
+  return colors.map((hex, index) => {
+    return {
+      set: palette,
+      name: `Color ${index}`,
+      hex,
+    };
+  });
+});
+
+import { culori } from "./external.js";
+
+export const references = [
+  ...tailwindColors,
+  ...materialDesignColors,
+  ...bootstrapColors,
+  ...lospecPalettes,
+].map((reference) => ({
+  ...reference,
+  hex: reference.hex.toLowerCase(),
+  parsed: culori.parse(reference.hex),
+}));

@@ -1,7 +1,3 @@
-import * as culori from "https://cdn.skypack.dev/culori";
-
-console.log(culori);
-
 import {
   hslToRgb,
   rgbToYiq,
@@ -10,12 +6,7 @@ import {
   rgbToHsp,
   hexToRgb,
 } from "./color-functions.js";
-import {
-  tailwindColors,
-  materialDesignColors,
-  bootstrapColors,
-  lospecPalettes,
-} from "./reference-colors.js";
+import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
 
 function initSliders(onInput, onChange) {
@@ -118,47 +109,7 @@ window.addEventListener("load", () => {
 
   initSliders(updateFastPreview, updateColorsPreview);
 
-  []
-    .concat(
-      Object.entries(tailwindColors).map(([name, hex]) => {
-        const parts = name.split("-");
-        const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-        const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-        return { set: "Tailwind", name: nameParts.join(" "), tint, hex };
-      })
-    )
-    .concat(
-      Object.entries(materialDesignColors).map(([name, hex]) => {
-        const parts = name.split("-");
-        const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-        const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-        return { set: "Material", name: nameParts.join(" "), tint, hex };
-      })
-    )
-    .concat(
-      Object.entries(bootstrapColors).map(([name, hex]) => {
-        const parts = name.split("-");
-        const tint = parts.length > 1 ? parts[parts.length - 1] : "";
-        const nameParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-        return { set: "Bootstrap", name: nameParts.join(" "), tint, hex };
-      })
-    )
-    .concat(
-      Object.entries(lospecPalettes).flatMap(([palette, colors]) => {
-        return colors.map((hex, index) => {
-          return {
-            set: palette,
-            name: `Color ${index}`,
-            tint: "",
-            hex,
-          };
-        });
-      })
-    )
-    // .filter(({ tint }) => tint == 900)
-    .map(({ set, name, tint, hex }) =>
-      stampReferenceTableRow(set, name, tint, hex.toLowerCase())
-    );
+  references.filter(({ tint }) => tint == 500).map(stampReferenceTableRow);
 });
 
 const referenceTableRows = document.querySelector(".reference-table-rows");
@@ -167,31 +118,45 @@ function stampReferenceTableCell(row, style, content) {
   Object.entries(style).forEach(([key, value]) => {
     cell.style[key] = value;
   });
-  if (typeof content === "string" || typeof content === "number") {
+  if (typeof content === "string") {
     cell.innerText = content;
+  } else if (typeof content === "number") {
+    cell.innerText = roundTo(content, 2);
+  } else if (typeof content === "undefined") {
+    cell.innerText = "-";
   }
   row.appendChild(cell);
 }
-function stampReferenceTableRow(set, name, tint, hex) {
+
+import { culori } from "./external.js";
+const okhslConverter = culori.converter("okhsl");
+const okhsvConverter = culori.converter("okhsv");
+const oklchConverter = culori.converter("oklch");
+function stampReferenceTableRow(color) {
+  const { set, name, tint, hex, parsed } = color;
+
   const row = document.createElement("tr");
   referenceTableRows.appendChild(row);
 
-  stampReferenceTableCell(row, { backgroundColor: hex });
+  stampReferenceTableCell(row, { backgroundColor: hex }, "");
   stampReferenceTableCell(row, {}, set);
   stampReferenceTableCell(row, {}, name);
   stampReferenceTableCell(row, { textAlign: "right" }, tint);
   stampReferenceTableCell(row, { fontFamily: "monospace" }, hex);
 
-  const { r, g, b } = hexToRgb(hex);
-  const [h, s, l] = rgbToHsl(r, g, b);
+  const okhsl = okhslConverter(parsed);
 
-  stampReferenceTableCell(row, {}, roundTo(h, 2));
-  stampReferenceTableCell(row, {}, roundTo(s, 2));
-  stampReferenceTableCell(row, {}, roundTo(l, 2));
+  stampReferenceTableCell(row, {}, okhsl.h);
+  stampReferenceTableCell(row, {}, okhsl.s);
+  stampReferenceTableCell(row, {}, okhsl.l);
 
-  const [hAlt, sAlt, p] = rgbToHsp(r, g, b);
+  const okhsv = okhsvConverter(parsed);
 
-  stampReferenceTableCell(row, {}, roundTo(hAlt, 2));
-  stampReferenceTableCell(row, {}, roundTo(sAlt, 2));
-  stampReferenceTableCell(row, {}, roundTo(p / 255, 2));
+  stampReferenceTableCell(row, {}, okhsv.s);
+  stampReferenceTableCell(row, {}, okhsv.v);
+
+  const oklch = oklchConverter(parsed);
+
+  stampReferenceTableCell(row, {}, oklch.l);
+  stampReferenceTableCell(row, {}, oklch.c);
 }
