@@ -8,7 +8,7 @@ const okhsvConverter = culori.converter("okhsv");
 const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
-  initPreview(document.forms[0].elements["saturation-vivid"]);
+  initPreview();
   initPalette(document.querySelector(".palette"));
   initToggles();
   initReferenceTable();
@@ -28,7 +28,9 @@ function bindSliders(event, handler, saturationField) {
   wrapped();
 }
 
-function initPreview(saturationField) {
+const vividInput = document.forms[0].elements["saturation-vivid"];
+const mutedInput = document.forms[0].elements["saturation-muted"];
+function initPreview() {
   Object.values(document.forms[0].elements).forEach((input) => {
     const preview = document.querySelector(`.${input.name}-preview`);
     function setValue() {
@@ -37,11 +39,13 @@ function initPreview(saturationField) {
     input.addEventListener("input", setValue);
     setValue();
   });
-  bindSliders("input", updateColorPreview, saturationField);
+  bindSliders("input", updateVividPreview, vividInput);
+  bindSliders("input", updateMutedPreview, mutedInput);
 }
 
-const hslBox = document.querySelector(".color-preview");
-function updateColorPreview(hue, saturation) {
+const vividPreview = document.querySelector(".color-preview-vivid");
+const mutedPreview = document.querySelector(".color-preview-muted");
+function updateVividPreview(hue, saturation) {
   const color = {
     h: hue,
     s: saturation / 100,
@@ -49,9 +53,21 @@ function updateColorPreview(hue, saturation) {
     mode: "okhsl",
   };
   const hex = culori.formatHex(color);
-  hslBox.style.background = hex;
-  hslBox.innerText = hex;
-  setTextClass(hslBox, color);
+  vividPreview.style.background = hex;
+  vividPreview.innerText = hex;
+  setTextClass(vividPreview, color);
+}
+function updateMutedPreview(hue, saturation) {
+  const color = {
+    h: hue,
+    s: saturation / 100,
+    l: 0.5,
+    mode: "okhsl",
+  };
+  const hex = culori.formatHex(color);
+  mutedPreview.style.background = hex;
+  mutedPreview.innerText = hex;
+  setTextClass(mutedPreview, color);
 }
 
 function buildPalette() {
