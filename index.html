@@ -120,42 +120,13 @@
         color: rgba(0, 0, 0, 0);
       }
 
-      .reference-table {
+      .css-rules {
         margin-top: 1rem;
-        border-collapse: collapse;
-        table-layout: fixed;
-      }
-
-      .reference-table th,
-      .reference-table td {
-        padding: 0.25rem 1rem;
-      }
-
-      .reference-filters {
-        display: flex;
-        gap: 0.5rem;
-      }
-      .reference-filters button {
-        padding: 0.25rem;
-      }
-
-      .filter-100 tr {
-        display: none;
-      }
-      .filter-100 tr.reference-tint-100 {
-        display: table-row;
-      }
-      .filter-500 tr {
-        display: none;
-      }
-      .filter-500 tr.reference-tint-500 {
-        display: table-row;
-      }
-      .filter-900 tr {
-        display: none;
-      }
-      .filter-900 tr.reference-tint-900 {
-        display: table-row;
+        max-height: 10rem;
+        min-width: 25rem;
+        overflow-y: auto;
+        font-family: monospace;
+        white-space: pre;
       }
 
       .dark-mode {
@@ -165,6 +136,9 @@
       .dark-mode textarea {
         background-color: black;
         color: white;
+      }
+      .dark-mode .config-section {
+        border-color: white;
       }
     </style>
   </head>
@@ -247,6 +221,7 @@
         </div>
       </div>
       <div class="palette"></div>
+      <h2>CSS Variables</h2>
       <div class="css-rules"></div>
     </div>
     <script type="module" src="./index.js"></script>

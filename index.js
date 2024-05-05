@@ -216,6 +216,8 @@ function initPalette(element) {
         setTextClass(paletteItem, tint.culori);
       }
     }
+
+    buildCssVariables(palette);
   }
 
   updatePalette();
@@ -231,6 +233,29 @@ function initPalette(element) {
     palette = buildPalette();
     updatePalette();
   });
+}
+
+const cssRules = document.querySelector(".css-rules");
+function buildCssVariables(palette) {
+  const variables = [
+    ["--color-black", "rgb(0, 0, 0)"],
+    ["--color-white", "rgb(255, 255, 255)"],
+  ].concat(
+    palette.colors.flatMap((color) => {
+      return color.tints.map((tint) => {
+        const name = `--color-${color.name}-${tint.label}`;
+        const value = culori.formatRgb(tint.culori);
+        return [name, value];
+      });
+    })
+  );
+  let list = "";
+  variables.forEach(([name, value]) => {
+    document.documentElement.style.setProperty(name, value);
+    list += `  ${name}: ${value};\n`;
+  });
+  cssRules.innerText = `:root {
+${list}}`;
 }
 
 function initToggles() {
