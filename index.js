@@ -8,7 +8,7 @@ const okhsvConverter = culori.converter("okhsv");
 const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
-  initPreview(document.forms[0].elements["saturation-vibrant"]);
+  initPreview(document.forms[0].elements["saturation-vivid"]);
   initPalette(document.querySelector(".palette"));
   initToggles();
   initReferenceTable();
@@ -54,8 +54,8 @@ function updateColorPreview(hue, saturation) {
 
 function buildPalette() {
   const hue = parseInt(document.forms[0].elements.hue.value);
-  const saturationVibrant = parseInt(
-    document.forms[0].elements["saturation-vibrant"].value
+  const saturationVivid = parseInt(
+    document.forms[0].elements["saturation-vivid"].value
   );
   const saturationMuted = parseInt(
     document.forms[0].elements["saturation-muted"].value
@@ -63,7 +63,7 @@ function buildPalette() {
 
   const paletteDefinition = buildPaletteDefinition(
     hue,
-    saturationVibrant,
+    saturationVivid,
     saturationMuted
   );
 

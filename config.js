@@ -21,7 +21,7 @@ function createConfig(stopCount, tintCount) {
   };
 }
 
-export const vibrantConfig = createConfig(12, 9);
+export const vividConfig = createConfig(12, 9);
 export const mutedConfig = createConfig(2, 9);
 export const greyscaleConfig = createConfig(1, 9);
 
@@ -46,7 +46,7 @@ export const greyscaleConfig = createConfig(1, 9);
 
 export function buildPaletteDefinition(
   baseHue,
-  saturationVibrant,
+  saturationVivid,
   saturationMuted
 ) {
   const saturationGreyscale = 0;
@@ -75,7 +75,7 @@ export function buildPaletteDefinition(
     });
   }
 
-  addToDefinition(vibrantConfig, "vivid", saturationVibrant);
+  addToDefinition(vividConfig, "vivid", saturationVivid);
   addToDefinition(mutedConfig, "muted", saturationMuted);
   addToDefinition(greyscaleConfig, "grey", saturationGreyscale);
 
