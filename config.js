@@ -16,7 +16,7 @@ const mutedConfig = createConfig(2);
 const greyscaleConfig = createConfig(1);
 
 const tintCount = 9;
-const tintConfig = [
+export const tintConfig = [
   50,
   // From 0 to 1000, excluding the endpoints
   ...Array.from(Array(tintCount + 2))

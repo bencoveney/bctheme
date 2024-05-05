@@ -56,6 +56,10 @@
         gap: 0.5rem;
       }
 
+      .slider-preview {
+        min-width: 3rem;
+      }
+
       .toggles {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -159,7 +163,7 @@
               value="257"
               data-unit="°"
             />
-            <div class="hue-preview"></div>
+            <div class="slider-preview hue-preview"></div>
             <label for="saturation-vivid">Saturation (vivid)</label>
             <input
               type="range"
@@ -170,7 +174,7 @@
               value="65"
               data-unit="%"
             />
-            <div class="saturation-vivid-preview"></div>
+            <div class="slider-preview saturation-vivid-preview"></div>
             <label for="saturation-muted">Saturation (muted)</label>
             <input
               type="range"
@@ -181,7 +185,7 @@
               value="10"
               data-unit="%"
             />
-            <div class="saturation-muted-preview"></div>
+            <div class="slider-preview saturation-muted-preview"></div>
             <label for="tint-smoothing">Tint Smoothing</label>
             <input
               type="range"
@@ -189,16 +193,19 @@
               min="0"
               max="100"
               step="1"
-              value="10"
+              value="30"
               data-unit="%"
             />
-            <div class="tint-smoothing-preview"></div>
+            <div class="slider-preview tint-smoothing-preview"></div>
           </form>
         </div>
         <div class="config-section">
           <div class="color-preview color-preview-vivid"></div>
           <div class="color-preview color-preview-muted"></div>
-          <canvas class="tint-preview" width="150" height="150"></canvas>
+          <canvas
+            class="tint-preview"
+            style="width: 150px; height: 150px"
+          ></canvas>
         </div>
         <div class="config-section">
           <form class="toggles">

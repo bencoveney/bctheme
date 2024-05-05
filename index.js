@@ -1,7 +1,13 @@
 import { references } from "./reference-colors.js";
-import { roundTo } from "./math-functions.js";
+import {
+  roundTo,
+  remap,
+  inverseLerp,
+  lerp,
+  smootherstep,
+} from "./math-functions.js";
 import { culori } from "./external.js";
-import { buildPaletteDefinition } from "./config.js";
+import { buildPaletteDefinition, tintConfig } from "./config.js";
 
 const okhslConverter = culori.converter("okhsl");
 const okhsvConverter = culori.converter("okhsv");
@@ -30,6 +36,7 @@ function bindSliders(event, handler, saturationField) {
 
 const vividInput = document.forms[0].elements["saturation-vivid"];
 const mutedInput = document.forms[0].elements["saturation-muted"];
+const tintInput = document.forms[0].elements["tint-smoothing"];
 function initPreview() {
   Object.values(document.forms[0].elements).forEach((input) => {
     const preview = document.querySelector(`.${input.name}-preview`);
@@ -41,10 +48,10 @@ function initPreview() {
   });
   bindSliders("input", updateVividPreview, vividInput);
   bindSliders("input", updateMutedPreview, mutedInput);
+  bindSliders("input", updateTintPreview, tintInput);
 }
 
 const vividPreview = document.querySelector(".color-preview-vivid");
-const mutedPreview = document.querySelector(".color-preview-muted");
 function updateVividPreview(hue, saturation) {
   const color = {
     h: hue,
@@ -57,6 +64,8 @@ function updateVividPreview(hue, saturation) {
   vividPreview.innerText = hex;
   setTextClass(vividPreview, color);
 }
+
+const mutedPreview = document.querySelector(".color-preview-muted");
 function updateMutedPreview(hue, saturation) {
   const color = {
     h: hue,
@@ -68,6 +77,64 @@ function updateMutedPreview(hue, saturation) {
   mutedPreview.style.background = hex;
   mutedPreview.innerText = hex;
   setTextClass(mutedPreview, color);
+}
+
+let gradient;
+function getGradient(width, height) {
+  if (gradient) {
+    return gradient;
+  }
+
+  gradient = new OffscreenCanvas(width, height);
+  const context = gradient.getContext("2d");
+
+  for (let i = 0; i < height; i++) {
+    const l = remap(0, height, 1, 0, i);
+    const color = {
+      h: 0,
+      s: 0,
+      l: l,
+      mode: "okhsl",
+    };
+    const hex = culori.formatHex(color);
+    context.beginPath();
+    context.rect(0, i, width, 1);
+    context.fillStyle = hex;
+    context.fill();
+    context.closePath();
+  }
+
+  return gradient;
+}
+
+const tintPreview = document.querySelector(".tint-preview");
+function updateTintPreview(_, smoothing) {
+  const context = tintPreview.getContext("2d");
+  const rawWidth = tintPreview.clientWidth;
+  const rawHeight = tintPreview.clientHeight;
+
+  const scale = window.devicePixelRatio;
+  const width = Math.floor(rawWidth * scale);
+  const height = Math.floor(rawHeight * scale);
+
+  tintPreview.width = width;
+  tintPreview.height = height;
+
+  context.drawImage(getGradient(width, height), 0, 0, width, height);
+  context.strokeStyle = "red";
+  context.beginPath();
+  context.moveTo(width, 0);
+  for (let i = 0; i < tintConfig.length; i++) {
+    const tint = tintConfig[i];
+    const x = remap(0, 1000, width, 0, tint);
+    const yT = inverseLerp(0, 1000, tint);
+    const yLinear = lerp(0, height, yT);
+    const ySmooth = lerp(0, height, smootherstep(0, 1, yT));
+    const yFinal = lerp(yLinear, ySmooth, smoothing / 100);
+    context.lineTo(x, yFinal);
+  }
+  context.lineTo(0, height);
+  context.stroke();
 }
 
 function buildPalette() {
