@@ -57,8 +57,6 @@ export function buildTintsDefinition(tintSmoothing) {
 
   definition.tintCount = definition.tints.length;
 
-  console.log(definition);
-
   return definition;
 }
 

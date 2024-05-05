@@ -150,6 +150,7 @@
   <body>
     <div class="wrapper">
       <h1>Playground</h1>
+      <nav><a href="./reference.html">References</a></nav>
       <div class="config">
         <div class="config-section">
           <form class="sliders">
@@ -160,7 +161,7 @@
               min="0"
               max="360"
               step="1"
-              value="257"
+              value="255"
               data-unit="°"
             />
             <div class="slider-preview hue-preview"></div>
@@ -182,7 +183,7 @@
               min="0"
               max="100"
               step="1"
-              value="10"
+              value="15"
               data-unit="%"
             />
             <div class="slider-preview saturation-muted-preview"></div>
@@ -193,7 +194,7 @@
               min="0"
               max="100"
               step="1"
-              value="30"
+              value="17"
               data-unit="%"
             />
             <div class="slider-preview tint-smoothing-preview"></div>
@@ -217,31 +218,6 @@
         </div>
       </div>
       <div class="palette"></div>
-      <h1>Reference</h1>
-      <div class="reference-filters"></div>
-      <table class="reference-table">
-        <thead>
-          <tr>
-            <th rowspan="2">Hex</th>
-            <th rowspan="2">Set</th>
-            <th rowspan="2">Color</th>
-            <th rowspan="2">Tint</th>
-            <th colspan="3">OKHSL</th>
-            <th colspan="2">OKHSV</th>
-            <th colspan="2">OKHCL</th>
-          </tr>
-          <tr>
-            <th>H</th>
-            <th>S</th>
-            <th>L</th>
-            <th>S</th>
-            <th>V</th>
-            <th>C</th>
-            <th>L</th>
-          </tr>
-        </thead>
-        <tbody class="reference-table-rows"></tbody>
-      </table>
     </div>
     <script type="module" src="./index.js"></script>
   </body>

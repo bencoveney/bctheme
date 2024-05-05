@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BCTheme - Reference</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: sans-serif;
+        padding-bottom: 2rem;
+      }
+
+      .wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .reference-table {
+        margin-top: 1rem;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .reference-table th,
+      .reference-table td {
+        padding: 0.25rem 1rem;
+      }
+
+      .reference-filters {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .reference-filters button {
+        padding: 0.25rem;
+      }
+
+      .filter-100 tr {
+        display: none;
+      }
+      .filter-100 tr.reference-tint-100 {
+        display: table-row;
+      }
+      .filter-500 tr {
+        display: none;
+      }
+      .filter-500 tr.reference-tint-500 {
+        display: table-row;
+      }
+      .filter-900 tr {
+        display: none;
+      }
+      .filter-900 tr.reference-tint-900 {
+        display: table-row;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Reference</h1>
+      <nav><a href="./index.html">Playground</a></nav>
+      <div class="reference-filters"></div>
+      <table class="reference-table">
+        <thead>
+          <tr>
+            <th rowspan="2">Hex</th>
+            <th rowspan="2">Set</th>
+            <th rowspan="2">Color</th>
+            <th rowspan="2">Tint</th>
+            <th colspan="3">OKHSL</th>
+            <th colspan="2">OKHSV</th>
+            <th colspan="2">OKHCL</th>
+          </tr>
+          <tr>
+            <th>H</th>
+            <th>S</th>
+            <th>L</th>
+            <th>S</th>
+            <th>V</th>
+            <th>C</th>
+            <th>L</th>
+          </tr>
+        </thead>
+        <tbody class="reference-table-rows"></tbody>
+      </table>
+    </div>
+    <script type="module" src="./reference.js"></script>
+  </body>
+</html>
