@@ -39,6 +39,13 @@
         gap: 0.5rem;
       }
 
+      .toggles {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+
       .color-preview {
         margin-top: 1rem;
         padding: 0.5rem;
@@ -70,6 +77,10 @@
       .palette-label {
         padding: 0.5rem 1rem;
         font-family: monospace;
+      }
+
+      .palette.hide-hex .palette-item {
+        color: rgba(0, 0, 0, 0);
       }
 
       .reference-table {
@@ -141,6 +152,10 @@
       </form>
       <div class="color-preview"></div>
       <div class="palette"></div>
+      <form class="toggles">
+        <label>Hide Hex</label>
+        <input type="checkbox" name="hide-hex" />
+      </form>
       <h1>Reference</h1>
       <div class="reference-filters"></div>
       <table class="reference-table">

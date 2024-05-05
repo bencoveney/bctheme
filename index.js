@@ -10,6 +10,7 @@ const oklchConverter = culori.converter("oklch");
 window.addEventListener("load", () => {
   initPreview(document.forms[0].elements["saturation-vibrant"]);
   initPalette(document.querySelector(".palette"));
+  initToggles();
   initReferenceTable();
 });
 
@@ -116,6 +117,20 @@ function initPalette(element) {
       updatePalette();
     });
   });
+}
+
+function initToggles() {
+  const palette = document.querySelector(".palette");
+  const checkbox = document.forms[1].elements["hide-hex"];
+  function updateHideHex() {
+    if (checkbox.checked) {
+      palette.classList.add("hide-hex");
+    } else {
+      palette.classList.remove("hide-hex");
+    }
+  }
+  updateHideHex();
+  checkbox.addEventListener("change", updateHideHex);
 }
 
 function setTextClass(element, color) {
