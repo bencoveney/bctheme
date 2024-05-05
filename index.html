@@ -133,7 +133,15 @@
       <h1>Playground</h1>
       <form class="sliders">
         <label for="hue">Base Hue</label>
-        <input type="range" name="hue" min="0" max="360" step="1" value="257" />
+        <input
+          type="range"
+          name="hue"
+          min="0"
+          max="360"
+          step="1"
+          value="257"
+          data-unit="°"
+        />
         <div class="hue-preview"></div>
         <label for="saturation-vivid">Saturation (vivid)</label>
         <input
@@ -143,6 +151,7 @@
           max="100"
           step="1"
           value="65"
+          data-unit="%"
         />
         <div class="saturation-vivid-preview"></div>
         <label for="saturation-muted">Saturation (muted)</label>
@@ -153,8 +162,20 @@
           max="100"
           step="1"
           value="10"
+          data-unit="%"
         />
         <div class="saturation-muted-preview"></div>
+        <label for="tint-smoothing">Tint Smoothing</label>
+        <input
+          type="range"
+          name="tint-smoothing"
+          min="0"
+          max="100"
+          step="1"
+          value="10"
+          data-unit="%"
+        />
+        <div class="tint-smoothing-preview"></div>
       </form>
       <div class="color-preview"></div>
       <div class="palette"></div>

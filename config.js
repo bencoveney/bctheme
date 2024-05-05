@@ -1,29 +1,29 @@
 import { lerp } from "./math-functions.js";
 
-function createConfig(stopCount, tintCount) {
+function createConfig(stopCount) {
   // Evenly space around a circle
   const stops = Array.from(Array(stopCount)).map((_, index) =>
     lerp(0, 360, index / stopCount)
   );
 
-  // From 0 to 1000, excluding the endpoints
-  const tints = [
-    50,
-    ...Array.from(Array(tintCount + 2))
-      .map((_, index) => lerp(0, 1000, index / (tintCount + 1)))
-      .slice(1, tintCount + 1),
-    950,
-  ];
-
   return {
     stops,
-    tints,
   };
 }
 
-export const vividConfig = createConfig(12, 9);
-export const mutedConfig = createConfig(2, 9);
-export const greyscaleConfig = createConfig(1, 9);
+const vividConfig = createConfig(12);
+const mutedConfig = createConfig(2);
+const greyscaleConfig = createConfig(1);
+
+const tintCount = 9;
+const tintConfig = [
+  50,
+  // From 0 to 1000, excluding the endpoints
+  ...Array.from(Array(tintCount + 2))
+    .map((_, index) => lerp(0, 1000, index / (tintCount + 1)))
+    .slice(1, tintCount + 1),
+  950,
+];
 
 /*
   {
@@ -47,9 +47,12 @@ export const greyscaleConfig = createConfig(1, 9);
 export function buildPaletteDefinition(
   baseHue,
   saturationVivid,
-  saturationMuted
+  saturationMuted,
+  tintSmoothing
 ) {
   const saturationGreyscale = 0;
+
+  console.log(tintSmoothing);
 
   const definition = {
     colors: [],
@@ -64,7 +67,7 @@ export function buildPaletteDefinition(
         tints: [],
       };
 
-      config.tints.forEach((tintLuminance) => {
+      tintConfig.forEach((tintLuminance) => {
         stop.tints.push({
           label: `tint${tintLuminance}`,
           luminance: tintLuminance,

@@ -30,10 +30,12 @@ function bindSliders(event, handler, saturationField) {
 
 function initPreview(saturationField) {
   Object.values(document.forms[0].elements).forEach((input) => {
-    input.addEventListener("input", () => {
-      document.querySelector(`.${input.name}-preview`).innerText = input.value;
-    });
-    document.querySelector(`.${input.name}-preview`).innerText = input.value;
+    const preview = document.querySelector(`.${input.name}-preview`);
+    function setValue() {
+      preview.innerText = `${input.value}${input.dataset.unit}`;
+    }
+    input.addEventListener("input", setValue);
+    setValue();
   });
   bindSliders("input", updateColorPreview, saturationField);
 }
@@ -60,11 +62,15 @@ function buildPalette() {
   const saturationMuted = parseInt(
     document.forms[0].elements["saturation-muted"].value
   );
+  const tintSmoothing = parseInt(
+    document.forms[0].elements["tint-smoothing"].value
+  );
 
   const paletteDefinition = buildPaletteDefinition(
     hue,
     saturationVivid,
-    saturationMuted
+    saturationMuted,
+    tintSmoothing
   );
 
   return paletteDefinition;
