@@ -128,7 +128,7 @@ function updateTintPreview(_, smoothing) {
     context.lineTo(x, height);
     // context.lineTo(x, y);
   }
-  context.lineTo(0, height);
+  // context.lineTo(0, height);
   context.stroke();
 }
 
