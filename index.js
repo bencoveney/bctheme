@@ -255,6 +255,16 @@ function initToggles() {
   }
   updateHideHex();
   hideHexCheckbox.addEventListener("change", updateHideHex);
+  const darkModeCheckbox = document.forms[1].elements["dark-mode"];
+  function updateDarkMode() {
+    if (darkModeCheckbox.checked) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }
+  updateDarkMode();
+  darkModeCheckbox.addEventListener("change", updateDarkMode);
 }
 
 function initColorNames() {

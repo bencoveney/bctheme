@@ -157,6 +157,15 @@
       .filter-900 tr.reference-tint-900 {
         display: table-row;
       }
+
+      .dark-mode {
+        background-color: black;
+        color: white;
+      }
+      .dark-mode textarea {
+        background-color: black;
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -226,6 +235,8 @@
             <input type="checkbox" name="hide-labels" />
             <label for="hide-hex">Hide Hex</label>
             <input type="checkbox" name="hide-hex" checked />
+            <label for="dark-mode">Dark Mode</label>
+            <input type="checkbox" name="dark-mode" />
           </form>
         </div>
         <div class="config-section">
@@ -236,6 +247,7 @@
         </div>
       </div>
       <div class="palette"></div>
+      <div class="css-rules"></div>
     </div>
     <script type="module" src="./index.js"></script>
   </body>
