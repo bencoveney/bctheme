@@ -1,4 +1,4 @@
-import { lerp } from "./math-functions.js";
+import { inverseLerp, lerp, smootherstep } from "./math-functions.js";
 
 function createConfig(stopCount) {
   // Evenly space around a circle
@@ -15,15 +15,53 @@ const vividConfig = createConfig(12);
 const mutedConfig = createConfig(2);
 const greyscaleConfig = createConfig(1);
 
+/*
+  {
+    tintCount,
+    tints: [
+      {
+        label: string
+        luminanceRaw: number,
+        luminanceAdjusted: number,
+      }
+    ]
+  }
+*/
+
 const tintCount = 9;
-export const tintConfig = [
-  50,
-  // From 0 to 1000, excluding the endpoints
-  ...Array.from(Array(tintCount + 2))
-    .map((_, index) => lerp(0, 1000, index / (tintCount + 1)))
-    .slice(1, tintCount + 1),
-  950,
-];
+export function buildTintsDefinition(tintSmoothing) {
+  const definition = {
+    tints: [],
+  };
+
+  const stops = [
+    50,
+    150,
+    850,
+    950,
+    // From 0 to 1000, excluding the endpoints
+    ...Array.from(Array(tintCount + 2))
+      .map((_, index) => lerp(0, 1000, index / (tintCount + 1)))
+      .slice(1, tintCount + 1),
+  ].toSorted((a, b) => a - b > 0);
+
+  stops.forEach((raw) => {
+    const linear = inverseLerp(0, 1000, raw);
+    const smooth = smootherstep(0, 1, linear);
+    const adjusted = lerp(linear, smooth, tintSmoothing / 100);
+    definition.tints.push({
+      label: `tint${raw}`,
+      luminanceRaw: raw,
+      luminanceAdjusted: lerp(0, 1000, adjusted),
+    });
+  });
+
+  definition.tintCount = definition.tints.length;
+
+  console.log(definition);
+
+  return definition;
+}
 
 /*
   {
@@ -35,8 +73,7 @@ export const tintConfig = [
         hue: number,
         saturation: number,
         tints: [{
-          label: string,
-          luminance: number,
+          ...tints.tint
           culori: {}
         }]
       }
@@ -48,13 +85,11 @@ export function buildPaletteDefinition(
   baseHue,
   saturationVivid,
   saturationMuted,
-  tintSmoothing
+  tintDefinitions
 ) {
   const saturationGreyscale = 0;
-
-  console.log(tintSmoothing);
-
   const definition = {
+    ...tintDefinitions,
     colors: [],
   };
 
@@ -67,11 +102,8 @@ export function buildPaletteDefinition(
         tints: [],
       };
 
-      tintConfig.forEach((tintLuminance) => {
-        stop.tints.push({
-          label: `tint${tintLuminance}`,
-          luminance: tintLuminance,
-        });
+      tintDefinitions.tints.forEach((tint) => {
+        stop.tints.push({ ...tint });
       });
 
       definition.colors.push(stop);
@@ -87,14 +119,13 @@ export function buildPaletteDefinition(
       tint.culori = {
         h: color.hue,
         s: color.saturation / 100,
-        l: tint.luminance / 1000,
+        l: tint.luminanceAdjusted / 1000,
         mode: "okhsl",
       };
     });
   });
 
   definition.colorCount = definition.colors.length;
-  definition.tintCount = definition.colors[0].tints.length;
 
   return definition;
 }

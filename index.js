@@ -1,13 +1,7 @@
 import { references } from "./reference-colors.js";
-import {
-  roundTo,
-  remap,
-  inverseLerp,
-  lerp,
-  smootherstep,
-} from "./math-functions.js";
+import { roundTo, remap } from "./math-functions.js";
 import { culori } from "./external.js";
-import { buildPaletteDefinition, tintConfig } from "./config.js";
+import { buildPaletteDefinition, buildTintsDefinition } from "./config.js";
 
 const okhslConverter = culori.converter("okhsl");
 const okhsvConverter = culori.converter("okhsv");
@@ -120,18 +114,20 @@ function updateTintPreview(_, smoothing) {
   tintPreview.width = width;
   tintPreview.height = height;
 
+  const tints = buildTintsDefinition(smoothing);
+
   context.drawImage(getGradient(width, height), 0, 0, width, height);
   context.strokeStyle = "red";
+  context.lineWidth = scale;
   context.beginPath();
   context.moveTo(width, 0);
-  for (let i = 0; i < tintConfig.length; i++) {
-    const tint = tintConfig[i];
-    const x = remap(0, 1000, width, 0, tint);
-    const yT = inverseLerp(0, 1000, tint);
-    const yLinear = lerp(0, height, yT);
-    const ySmooth = lerp(0, height, smootherstep(0, 1, yT));
-    const yFinal = lerp(yLinear, ySmooth, smoothing / 100);
-    context.lineTo(x, yFinal);
+  for (let i = 0; i < tints.tintCount; i++) {
+    const tint = tints.tints[i];
+    const x = remap(0, 1000, width, 0, tint.luminanceRaw);
+    const y = remap(0, 1000, 0, height, tint.luminanceAdjusted);
+    context.moveTo(x, y);
+    context.lineTo(x, height);
+    // context.lineTo(x, y);
   }
   context.lineTo(0, height);
   context.stroke();
@@ -153,7 +149,7 @@ function buildPalette() {
     hue,
     saturationVivid,
     saturationMuted,
-    tintSmoothing
+    buildTintsDefinition(tintSmoothing)
   );
 
   return paletteDefinition;
