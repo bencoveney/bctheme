@@ -29,16 +29,14 @@ const greyscaleConfig = createConfig(1);
 */
 
 const tintCount = 9;
+const includeExtras = false;
 export function buildTintsDefinition(tintSmoothing) {
   const definition = {
     tints: [],
   };
 
   const stops = [
-    50,
-    150,
-    850,
-    950,
+    ...(includeExtras ? [50, 150, 850, 950] : []),
     // From 0 to 1000, excluding the endpoints
     ...Array.from(Array(tintCount + 2))
       .map((_, index) => lerp(0, 1000, index / (tintCount + 1)))
@@ -53,6 +51,7 @@ export function buildTintsDefinition(tintSmoothing) {
       label: `tint${raw}`,
       luminanceRaw: raw,
       luminanceAdjusted: lerp(0, 1000, adjusted),
+      isExtra: raw % 100 !== 0,
     });
   });
 
