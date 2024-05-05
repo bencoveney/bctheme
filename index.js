@@ -1,11 +1,16 @@
 import { remap } from "./math-functions.js";
 import { culori, setTextClass } from "./external.js";
-import { buildPaletteDefinition, buildTintsDefinition } from "./config.js";
+import {
+  buildPaletteDefinition,
+  buildTintsDefinition,
+  defaultColorNames,
+} from "./config.js";
 
 window.addEventListener("load", () => {
   initPreview();
-  initPalette(document.querySelector(".palette"));
+  initColorNames();
   initToggles();
+  initPalette(document.querySelector(".palette"));
 });
 
 function bindSliders(event, handler, saturationField) {
@@ -139,11 +144,17 @@ function buildPalette() {
     document.forms[0].elements["tint-smoothing"].value
   );
 
+  const colorNames = document.forms[2].elements["color-names"].value
+    .trim()
+    .split("\n")
+    .map((name) => name.trim());
+
   const paletteDefinition = buildPaletteDefinition(
     hue,
     saturationVivid,
     saturationMuted,
-    buildTintsDefinition(tintSmoothing)
+    buildTintsDefinition(tintSmoothing),
+    colorNames
   );
 
   return paletteDefinition;
@@ -161,7 +172,7 @@ function initPalette(element) {
     const stop = palette.colors[stopIndex];
     const stopLabelEl = document.createElement("div");
     stopLabelEl.classList.add("palette-label", "palette-label-stop");
-    stopLabelEl.innerText = stop.label;
+    stopLabelEl.innerText = stop.name;
     element.appendChild(stopLabelEl);
   }
 
@@ -182,6 +193,13 @@ function initPalette(element) {
   }
 
   function updatePalette() {
+    const paletteStopLabels = element.querySelectorAll(".palette-label-stop");
+    for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
+      const stop = palette.colors[stopIndex];
+      const stopLabelEl = paletteStopLabels.item(stopIndex);
+      stopLabelEl.innerText = stop.name;
+    }
+
     const paletteItems = element.querySelectorAll(".palette-item");
     for (let tintIndex = 0; tintIndex < palette.tintCount; tintIndex++) {
       for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
@@ -208,6 +226,11 @@ function initPalette(element) {
       updatePalette();
     });
   });
+
+  document.forms[2].elements["color-names"].addEventListener("change", () => {
+    palette = buildPalette();
+    updatePalette();
+  });
 }
 
 function initToggles() {
@@ -232,4 +255,9 @@ function initToggles() {
   }
   updateHideHex();
   hideHexCheckbox.addEventListener("change", updateHideHex);
+}
+
+function initColorNames() {
+  const colorNames = document.forms[2].elements["color-names"];
+  colorNames.value = defaultColorNames.join("\n");
 }

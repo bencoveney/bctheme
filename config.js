@@ -1,5 +1,23 @@
 import { inverseLerp, lerp, smootherstep } from "./math-functions.js";
 
+export const defaultColorNames = [
+  "blue",
+  "violet",
+  "purple",
+  "pink",
+  "red",
+  "orange",
+  "gold",
+  "yellow",
+  "green",
+  "aqua",
+  "teal",
+  "sky",
+  "night",
+  "earth",
+  "grey",
+];
+
 function createConfig(stopCount) {
   // Evenly space around a circle
   const stops = Array.from(Array(stopCount)).map((_, index) =>
@@ -48,7 +66,7 @@ export function buildTintsDefinition(tintSmoothing) {
     const smooth = smootherstep(0, 1, linear);
     const adjusted = lerp(linear, smooth, tintSmoothing / 100);
     definition.tints.push({
-      label: `tint${raw}`,
+      label: `${raw}`,
       luminanceRaw: raw,
       luminanceAdjusted: lerp(0, 1000, adjusted),
       isExtra: raw % 100 !== 0,
@@ -82,18 +100,23 @@ export function buildPaletteDefinition(
   baseHue,
   saturationVivid,
   saturationMuted,
-  tintDefinitions
+  tintDefinitions,
+  colorNames
 ) {
   const saturationGreyscale = 0;
+
   const definition = {
     ...tintDefinitions,
     colors: [],
   };
 
-  function addToDefinition(config, label, saturation) {
+  function addToDefinition(config, set, saturation) {
     config.stops.forEach((stopHue, index) => {
+      const defaultName = config.stops.length > 1 ? `${set}${index + 1}` : set;
+      const name = colorNames[definition.colors.length] || defaultName;
       const stop = {
-        label: config.stops.length > 1 ? `${label}${index + 1}` : label,
+        name,
+        set,
         hue: stopHue + baseHue,
         saturation: saturation,
         tints: [],
