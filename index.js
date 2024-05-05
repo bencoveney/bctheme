@@ -1,7 +1,7 @@
 import { references } from "./reference-colors.js";
 import { roundTo } from "./math-functions.js";
 import { culori } from "./external.js";
-import { vibrantConfig, mutedConfig, greyscaleConfig } from "./config.js";
+import { buildPaletteDefinition } from "./config.js";
 
 const okhslConverter = culori.converter("okhsl");
 const okhsvConverter = culori.converter("okhsv");
@@ -9,21 +9,7 @@ const oklchConverter = culori.converter("oklch");
 
 window.addEventListener("load", () => {
   initPreview(document.forms[0].elements["saturation-vibrant"]);
-  initPalette(
-    document.querySelector(".palette-vibrant"),
-    document.forms[0].elements["saturation-vibrant"],
-    vibrantConfig
-  );
-  initPalette(
-    document.querySelector(".palette-muted"),
-    document.forms[0].elements["saturation-muted"],
-    mutedConfig
-  );
-  initPalette(
-    document.querySelector(".palette-greyscale"),
-    document.forms[0].elements["saturation-greyscale"],
-    greyscaleConfig
-  );
+  initPalette(document.querySelector(".palette"));
   initReferenceTable();
 });
 
@@ -65,51 +51,71 @@ function updateColorPreview(hue, saturation) {
   setTextClass(hslBox, color);
 }
 
-function initPalette(element, saturationField, config) {
-  element.style.gridTemplateColumns = `min-content repeat(${config.stops.length}, 1fr)`;
+function buildPalette() {
+  const hue = parseInt(document.forms[0].elements.hue.value);
+  const saturationVibrant = parseInt(
+    document.forms[0].elements["saturation-vibrant"].value
+  );
+  const saturationMuted = parseInt(
+    document.forms[0].elements["saturation-muted"].value
+  );
 
-  for (let tintIndex = 0; tintIndex < config.tints.length; tintIndex++) {
-    const tint = config.tints[tintIndex];
+  const paletteDefinition = buildPaletteDefinition(
+    hue,
+    saturationVibrant,
+    saturationMuted
+  );
+
+  return paletteDefinition;
+}
+
+function initPalette(element) {
+  let palette = buildPalette();
+  element.style.gridTemplateColumns = `min-content repeat(${palette.colors.length}, 1fr)`;
+
+  const anyStop = palette.colors[0];
+  for (let tintIndex = 0; tintIndex < palette.tintCount; tintIndex++) {
+    const tint = anyStop.tints[tintIndex];
 
     const labelEl = document.createElement("div");
     labelEl.classList.add("palette-label");
-    labelEl.innerText = tint;
+    labelEl.innerText = tint.luminance;
     element.appendChild(labelEl);
 
-    for (let stopIndex = 0; stopIndex < config.stops.length; stopIndex++) {
+    for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
       const itemEl = document.createElement("div");
       itemEl.classList.add("palette-item");
       element.appendChild(itemEl);
     }
   }
 
-  function updatePalette(hue, saturation) {
+  function updatePalette() {
     const paletteItems = element.querySelectorAll(".palette-item");
-    for (let tintIndex = 0; tintIndex < config.tints.length; tintIndex++) {
-      const tint = config.tints[tintIndex];
-
-      for (let stopIndex = 0; stopIndex < config.stops.length; stopIndex++) {
-        const stop = config.stops[stopIndex];
+    for (let tintIndex = 0; tintIndex < palette.tintCount; tintIndex++) {
+      for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
+        const stop = palette.colors[stopIndex];
+        const tint = stop.tints[tintIndex];
 
         const paletteItem = paletteItems.item(
-          tintIndex * config.stops.length + stopIndex
+          tintIndex * palette.colorCount + stopIndex
         );
 
-        const color = {
-          h: hue + stop,
-          s: saturation / 100,
-          l: tint / 1000,
-          mode: "okhsl",
-        };
-        const hex = culori.formatHex(color);
+        const hex = culori.formatHex(tint.culori);
         paletteItem.style.background = hex;
         paletteItem.innerHTML = hex;
-        setTextClass(paletteItem, color);
+        setTextClass(paletteItem, tint.culori);
       }
     }
   }
 
-  bindSliders("change", updatePalette, saturationField);
+  updatePalette();
+
+  Object.values(document.forms[0].elements).forEach((input) => {
+    input.addEventListener("change", () => {
+      palette = buildPalette();
+      updatePalette();
+    });
+  });
 }
 
 function setTextClass(element, color) {
