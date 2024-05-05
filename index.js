@@ -74,14 +74,26 @@ function initPalette(element) {
   let palette = buildPalette();
   element.style.gridTemplateColumns = `min-content repeat(${palette.colors.length}, 1fr)`;
 
+  const emptyEl = document.createElement("div");
+  emptyEl.classList.add("palette-label");
+  element.appendChild(emptyEl);
+
+  for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
+    const stop = palette.colors[stopIndex];
+    const stopLabelEl = document.createElement("div");
+    stopLabelEl.classList.add("palette-label", "palette-label-stop");
+    stopLabelEl.innerText = stop.label;
+    element.appendChild(stopLabelEl);
+  }
+
   const anyStop = palette.colors[0];
   for (let tintIndex = 0; tintIndex < palette.tintCount; tintIndex++) {
     const tint = anyStop.tints[tintIndex];
 
-    const labelEl = document.createElement("div");
-    labelEl.classList.add("palette-label");
-    labelEl.innerText = tint.luminance;
-    element.appendChild(labelEl);
+    const tintLabelEl = document.createElement("div");
+    tintLabelEl.classList.add("palette-label", "palette-label-tint");
+    tintLabelEl.innerText = tint.label;
+    element.appendChild(tintLabelEl);
 
     for (let stopIndex = 0; stopIndex < palette.colorCount; stopIndex++) {
       const itemEl = document.createElement("div");
@@ -121,16 +133,26 @@ function initPalette(element) {
 
 function initToggles() {
   const palette = document.querySelector(".palette");
-  const checkbox = document.forms[1].elements["hide-hex"];
+  const hideLabelsCheckbox = document.forms[1].elements["hide-labels"];
+  function updateLabelsHex() {
+    if (hideLabelsCheckbox.checked) {
+      palette.classList.add("hide-labels");
+    } else {
+      palette.classList.remove("hide-labels");
+    }
+  }
+  updateLabelsHex();
+  hideLabelsCheckbox.addEventListener("change", updateLabelsHex);
+  const hideHexCheckbox = document.forms[1].elements["hide-hex"];
   function updateHideHex() {
-    if (checkbox.checked) {
+    if (hideHexCheckbox.checked) {
       palette.classList.add("hide-hex");
     } else {
       palette.classList.remove("hide-hex");
     }
   }
   updateHideHex();
-  checkbox.addEventListener("change", updateHideHex);
+  hideHexCheckbox.addEventListener("change", updateHideHex);
 }
 
 function setTextClass(element, color) {

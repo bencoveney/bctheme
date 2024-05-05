@@ -69,7 +69,7 @@
         display: grid;
       }
 
-      .palette-label {
+      .palette-label-tint {
         text-align: right;
       }
 
@@ -77,6 +77,12 @@
       .palette-label {
         padding: 0.5rem 1rem;
         font-family: monospace;
+      }
+
+      .palette.hide-labels .palette-label {
+        visibility: hidden;
+        font-size: 0;
+        padding: 0;
       }
 
       .palette.hide-hex .palette-item {
@@ -153,6 +159,8 @@
       <div class="color-preview"></div>
       <div class="palette"></div>
       <form class="toggles">
+        <label>Hide Labels</label>
+        <input type="checkbox" name="hide-labels" />
         <label>Hide Hex</label>
         <input type="checkbox" name="hide-hex" />
       </form>

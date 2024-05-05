@@ -31,10 +31,12 @@ export const greyscaleConfig = createConfig(1, 9);
     tintCount,
     colors: [
       {
+        label: string
         hue: number,
         saturation: number,
         tints: [{
-          luminance: number
+          label: string,
+          luminance: number,
           culori: {}
         }]
       }
@@ -53,9 +55,10 @@ export function buildPaletteDefinition(
     colors: [],
   };
 
-  function addToDefinition(config, saturation) {
-    config.stops.forEach((stopHue) => {
+  function addToDefinition(config, label, saturation) {
+    config.stops.forEach((stopHue, index) => {
       const stop = {
+        label: config.stops.length > 1 ? `${label}${index + 1}` : label,
         hue: stopHue + baseHue,
         saturation: saturation,
         tints: [],
@@ -63,6 +66,7 @@ export function buildPaletteDefinition(
 
       config.tints.forEach((tintLuminance) => {
         stop.tints.push({
+          label: `tint${tintLuminance}`,
           luminance: tintLuminance,
         });
       });
@@ -71,9 +75,9 @@ export function buildPaletteDefinition(
     });
   }
 
-  addToDefinition(vibrantConfig, saturationVibrant);
-  addToDefinition(mutedConfig, saturationMuted);
-  addToDefinition(greyscaleConfig, saturationGreyscale);
+  addToDefinition(vibrantConfig, "vivid", saturationVibrant);
+  addToDefinition(mutedConfig, "muted", saturationMuted);
+  addToDefinition(greyscaleConfig, "grey", saturationGreyscale);
 
   definition.colors.forEach((color) => {
     color.tints.forEach((tint) => {
