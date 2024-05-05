@@ -32,6 +32,21 @@
         margin-top: 2rem;
       }
 
+      .config {
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+      }
+
+      .config-section {
+        border-left: 1px dashed black;
+        padding-left: 1rem;
+      }
+      .config-section:nth-child(1) {
+        border-left: 0;
+        padding-left: 0;
+      }
+
       .sliders {
         margin-top: 1rem;
         display: grid;
@@ -131,60 +146,68 @@
   <body>
     <div class="wrapper">
       <h1>Playground</h1>
-      <form class="sliders">
-        <label for="hue">Base Hue</label>
-        <input
-          type="range"
-          name="hue"
-          min="0"
-          max="360"
-          step="1"
-          value="257"
-          data-unit="°"
-        />
-        <div class="hue-preview"></div>
-        <label for="saturation-vivid">Saturation (vivid)</label>
-        <input
-          type="range"
-          name="saturation-vivid"
-          min="0"
-          max="100"
-          step="1"
-          value="65"
-          data-unit="%"
-        />
-        <div class="saturation-vivid-preview"></div>
-        <label for="saturation-muted">Saturation (muted)</label>
-        <input
-          type="range"
-          name="saturation-muted"
-          min="0"
-          max="100"
-          step="1"
-          value="10"
-          data-unit="%"
-        />
-        <div class="saturation-muted-preview"></div>
-        <label for="tint-smoothing">Tint Smoothing</label>
-        <input
-          type="range"
-          name="tint-smoothing"
-          min="0"
-          max="100"
-          step="1"
-          value="10"
-          data-unit="%"
-        />
-        <div class="tint-smoothing-preview"></div>
-      </form>
-      <div class="color-preview"></div>
+      <div class="config">
+        <div class="config-section">
+          <form class="sliders">
+            <label for="hue">Base Hue</label>
+            <input
+              type="range"
+              name="hue"
+              min="0"
+              max="360"
+              step="1"
+              value="257"
+              data-unit="°"
+            />
+            <div class="hue-preview"></div>
+            <label for="saturation-vivid">Saturation (vivid)</label>
+            <input
+              type="range"
+              name="saturation-vivid"
+              min="0"
+              max="100"
+              step="1"
+              value="65"
+              data-unit="%"
+            />
+            <div class="saturation-vivid-preview"></div>
+            <label for="saturation-muted">Saturation (muted)</label>
+            <input
+              type="range"
+              name="saturation-muted"
+              min="0"
+              max="100"
+              step="1"
+              value="10"
+              data-unit="%"
+            />
+            <div class="saturation-muted-preview"></div>
+            <label for="tint-smoothing">Tint Smoothing</label>
+            <input
+              type="range"
+              name="tint-smoothing"
+              min="0"
+              max="100"
+              step="1"
+              value="10"
+              data-unit="%"
+            />
+            <div class="tint-smoothing-preview"></div>
+          </form>
+        </div>
+        <div class="config-section">
+          <div class="color-preview"></div>
+        </div>
+        <div class="config-section">
+          <form class="toggles">
+            <label>Hide Labels</label>
+            <input type="checkbox" name="hide-labels" />
+            <label>Hide Hex</label>
+            <input type="checkbox" name="hide-hex" />
+          </form>
+        </div>
+      </div>
       <div class="palette"></div>
-      <form class="toggles">
-        <label>Hide Labels</label>
-        <input type="checkbox" name="hide-labels" />
-        <label>Hide Hex</label>
-        <input type="checkbox" name="hide-hex" />
-      </form>
       <h1>Reference</h1>
       <div class="reference-filters"></div>
       <table class="reference-table">
