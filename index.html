@@ -243,6 +243,137 @@
         font-weight: bold;
       }
 
+      .sample-code {
+        margin-top: 1rem;
+        min-width: 65rem;
+        padding: 1rem;
+        background-color: var(--color-night-100);
+        color: var(--color-night-800);
+        line-height: 110%;
+        font-size: 1.125rem;
+      }
+      .sample-code-keyword {
+        color: var(--color-sky-700);
+      }
+      .sample-code-title {
+        color: var(--color-purple-700);
+      }
+      .sample-code-params {
+      }
+      .sample-code-string {
+        color: var(--color-green-700);
+      }
+      .sample-code-number {
+        color: var(--color-gold-700);
+      }
+      .sample-code-attr {
+        color: var(--color-orange-700);
+      }
+      .sample-code-property {
+      }
+      .sample-code-title.class_ {
+        color: var(--color-yellow-700);
+      }
+      .sample-code-title.function_ {
+      }
+
+      .ansi-fg-black {
+        color: var(--color-night-200);
+      }
+      .ansi-fg-light-black {
+        color: var(--color-night-400);
+      }
+      .ansi-fg-red {
+        color: var(--color-red-400);
+      }
+      .ansi-fg-light-red {
+        color: var(--color-red-600);
+      }
+      .ansi-fg-green {
+        color: var(--color-green-400);
+      }
+      .ansi-fg-light-green {
+        color: var(--color-green-600);
+      }
+      .ansi-fg-yellow {
+        color: var(--color-yellow-400);
+      }
+      .ansi-fg-light-yellow {
+        color: var(--color-yellow-600);
+      }
+      .ansi-fg-blue {
+        color: var(--color-blue-400);
+      }
+      .ansi-fg-light-blue {
+        color: var(--color-blue-600);
+      }
+      .ansi-fg-magenta {
+        color: var(--color-pink-400);
+      }
+      .ansi-fg-light-magenta {
+        color: var(--color-pink-600);
+      }
+      .ansi-fg-cyan {
+        color: var(--color-teal-400);
+      }
+      .ansi-fg-light-cyan {
+        color: var(--color-teal-600);
+      }
+      .ansi-fg-white {
+        color: var(--color-night-600);
+      }
+      .ansi-fg-light-white {
+        color: var(--color-night-800);
+      }
+      .ansi-bg-black {
+        background-color: var(--color-night-200);
+      }
+      .ansi-bg-light-black {
+        background-color: var(--color-night-400);
+      }
+      .ansi-bg-red {
+        background-color: var(--color-red-400);
+      }
+      .ansi-bg-light-red {
+        background-color: var(--color-red-600);
+      }
+      .ansi-bg-green {
+        background-color: var(--color-green-400);
+      }
+      .ansi-bg-light-green {
+        background-color: var(--color-green-600);
+      }
+      .ansi-bg-yellow {
+        background-color: var(--color-yellow-400);
+      }
+      .ansi-bg-light-yellow {
+        background-color: var(--color-yellow-600);
+      }
+      .ansi-bg-blue {
+        background-color: var(--color-blue-400);
+      }
+      .ansi-bg-light-blue {
+        background-color: var(--color-blue-600);
+      }
+      .ansi-bg-magenta {
+        background-color: var(--color-pink-400);
+      }
+      .ansi-bg-light-magenta {
+        background-color: var(--color-pink-600);
+      }
+      .ansi-bg-cyan {
+        background-color: var(--color-teal-400);
+      }
+      .ansi-bg-light-cyan {
+        background-color: var(--color-teal-600);
+      }
+      .ansi-bg-white {
+        background-color: var(--color-night-600);
+      }
+      .ansi-bg-light-white {
+        background-color: var(--color-night-800);
+      }
+
       .dark-mode {
         background-color: black;
         color: white;
@@ -1035,6 +1166,67 @@
             </div>
           </div>
         </div>
+      </div>
+      <h2>Syntax Highlighting</h2>
+      <div class="sample-code">
+        <pre><code><span class="sample-code-keyword">let</span> gradient;
+<span class="sample-code-keyword">function</span> <span class="sample-code-title function_">getGradient</span>(<span class="sample-code-params">width, height</span>) {
+  <span class="sample-code-keyword">if</span> (gradient) {
+    <span class="sample-code-keyword">return</span> gradient;
+  }
+
+  gradient = <span class="sample-code-keyword">new</span> <span class="sample-code-title class_">OffscreenCanvas</span>(width, height);
+  <span class="sample-code-keyword">const</span> context = gradient.<span class="sample-code-title function_">getContext</span>(<span class="sample-code-string">"2d"</span>);
+
+  <span class="sample-code-keyword">for</span> (<span class="sample-code-keyword">let</span> i = <span class="sample-code-number">0</span>; i &lt; height; i++) {
+    <span class="sample-code-keyword">const</span> l = <span class="sample-code-title function_">remap</span>(<span class="sample-code-number">0</span>, height, <span class="sample-code-number">1</span>, <span class="sample-code-number">0</span>, i);
+    <span class="sample-code-keyword">const</span> color = {
+      <span class="sample-code-attr">h</span>: <span class="sample-code-number">0</span>,
+      <span class="sample-code-attr">s</span>: <span class="sample-code-number">0</span>,
+      <span class="sample-code-attr">l</span>: l,
+      <span class="sample-code-attr">mode</span>: <span class="sample-code-string">"okhsl"</span>,
+    };
+    <span class="sample-code-keyword">const</span> hex = culori.<span class="sample-code-title function_">formatHex</span>(color);
+    context.<span class="sample-code-title function_">beginPath</span>();
+    context.<span class="sample-code-title function_">rect</span>(<span class="sample-code-number">0</span>, i, width, <span class="sample-code-number">1</span>);
+    context.<span class="sample-code-property">fillStyle</span> = hex;
+    context.<span class="sample-code-title function_">fill</span>();
+    context.<span class="sample-code-title function_">closePath</span>();
+  }
+
+  <span class="sample-code-keyword">return</span> gradient;
+}</code></pre>
+      </div>
+      <h2>Terminal ANSI codes</h2>
+      <div class="sample-code">
+        <pre><code><span class="ansi-fg-light-green">benc@DESKTOP-FQRCPNJ</span>:<span class="ansi-fg-light-blue">~/projects/bctheme</span>$ neofetch<span class="ansi-fg-light-red">
+              .-/+oossssoo+/-.
+          `:+ssssssssssssssssss+:`
+        -+ssssssssssssssssssyyssss+-
+      .ossssssssssssssssss</span>dMMMNy<span class="ansi-fg-light-red">sssso.
+     /sssssssssss</span>hdmmNNmmyNMMMMh<span class="ansi-fg-light-red">ssssss/
+    +sssssssss</span>hm<span class="ansi-fg-light-red">yd</span>MMMMMMMNddddy<span class="ansi-fg-light-red">ssssssss+
+   /ssssssss</span>hNMMM<span class="ansi-fg-light-red">yh</span>hyyyyhmNMMMNh<span class="ansi-fg-light-red">ssssssss/
+  .ssssssss</span>dMMMNh<span class="ansi-fg-light-red">ssssssssss</span>hNMMMd<span class="ansi-fg-light-red">ssssssss.
+  +ssss</span>hhhyNMMNy<span class="ansi-fg-light-red">ssssssssssss</span>yNMMMy<span class="ansi-fg-light-red">sssssss+
+  oss</span>yNMMMNyMMh<span class="ansi-fg-light-red">ssssssssssssss</span>hmmmh<span class="ansi-fg-light-red">ssssssso
+  oss</span>yNMMMNyMMh<span class="ansi-fg-light-red">sssssssssssssshmmmhssssssso
+  +ssss</span>hhhyNMMNy<span class="ansi-fg-light-red">ssssssssssss</span>yNMMMy<span class="ansi-fg-light-red">sssssss+   benc</span>@<span class="ansi-fg-light-red">DESKTOP-FQRCPNJ
+  .ssssssss</span>dMMMNh<span class="ansi-fg-light-red">ssssssssss</span>hNMMMd<span class="ansi-fg-light-red">ssssssss.</span>   --------------------
+<span class="ansi-fg-light-red">   /ssssssss</span>hNMMM<span class="ansi-fg-light-red">yh</span>hyyyyhdNMMMNh<span class="ansi-fg-light-red">ssssssss/    OS</span>: Ubuntu 22.04.3 LTS on Windows 10 x86_64
+<span class="ansi-fg-light-red">    +sssssssss</span>dm<span class="ansi-fg-light-red">yd</span>MMMMMMMMddddy<span class="ansi-fg-light-red">ssssssss+     Kernel</span>: 5.15.150.1-microsoft-standard-WSL2
+<span class="ansi-fg-light-red">     /sssssssssss</span>hdmNNNNmyNMMMMh<span class="ansi-fg-light-red">ssssss/      Uptime</span>: 5 hours, 49 mins
+<span class="ansi-fg-light-red">      .ossssssssssssssssss</span>dMMMNy<span class="ansi-fg-light-red">sssso.       Packages</span>: 1015 (dpkg)
+<span class="ansi-fg-light-red">        -+sssssssssssssssss</span>yyy<span class="ansi-fg-light-red">ssss+-         Shell</span>: bash 5.1.16
+<span class="ansi-fg-light-red">          `:+ssssssssssssssssss+:`           Theme</span>: Adwaita [GTK3]
+<span class="ansi-fg-light-red">              .-/+oossssoo+/-.               Icons</span>: Adwaita [GTK3]
+<span class="ansi-fg-light-red">                                             Terminal</span>: vscode
+<span class="ansi-fg-light-red">                                             CPU</span>: AMD Ryzen 7 5800X (16) @ 3.799GHz
+<span class="ansi-fg-light-red">                                             GPU</span>: 003b:00:00.0 Microsoft Corporation Device 008e
+<span class="ansi-fg-light-red">                                             Memory</span>: 1156MiB / 15958MiB
+
+                                             <span class="ansi-bg-black">   </span><span class="ansi-bg-red">   </span><span class="ansi-bg-green">   </span><span class="ansi-bg-yellow">   </span><span class="ansi-bg-blue">   </span><span class="ansi-bg-magenta">   </span><span class="ansi-bg-cyan">   </span><span class="ansi-bg-white">   </span>
+                                             <span class="ansi-bg-light-black">   </span><span class="ansi-bg-light-red">   </span><span class="ansi-bg-light-green">   </span><span class="ansi-bg-light-yellow">   </span><span class="ansi-bg-light-blue">   </span><span class="ansi-bg-light-magenta">   </span><span class="ansi-bg-light-cyan">   </span><span class="ansi-bg-light-white">   </span></code></pre>
       </div>
     </div>
     <script type="module" src="./index.js"></script>

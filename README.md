@@ -12,7 +12,7 @@ Consistent set of colours I can use for projects
 - Terminal colours
 - Syntax highlighting
   - Plus diffs
-- Art assets
+- Game assets
   - Pixel art
 
 ### Output as:
