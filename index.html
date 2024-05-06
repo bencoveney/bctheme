@@ -131,6 +131,12 @@
         white-space: pre;
       }
 
+      .note {
+        margin: 2rem 0 1rem 0;
+        font-style: italic;
+        max-width: 40rem;
+      }
+
       .samples {
         margin-top: 1rem;
         display: grid;
@@ -197,6 +203,46 @@
         margin-top: 1rem;
       }
 
+      .sample-status-wrapper {
+        padding: 1rem;
+        display: flex;
+        gap: 1rem;
+        border-style: solid;
+        border-width: 0 0 3px 0;
+      }
+      .sample-status-icon {
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+      }
+      .sample-status-body {
+        display: flex;
+        flex-direction: column;
+      }
+      .sample-status-heading {
+        text-align: left;
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+      .sample-status-description {
+        text-align: left;
+        line-height: 140%;
+        margin-top: 0.5rem;
+      }
+      .sample-status-button {
+        align-self: flex-end;
+        padding: 0.5rem 1rem;
+        border: 0;
+        margin-top: 1rem;
+        border-radius: 0.25rem;
+        font-weight: bold;
+      }
+
       .dark-mode {
         background-color: black;
         color: white;
@@ -214,6 +260,11 @@
     <div class="wrapper">
       <h1>Playground</h1>
       <nav><a href="./reference.html">References</a></nav>
+      <p class="note">
+        This page has been built like a development tool rather than to serve as
+        a functioning webpage. Don't expect the page to lay out sensibly on
+        mobile. If anything doesn't work try clearing your browser cache.
+      </p>
       <div class="config">
         <div class="config-section">
           <form class="sliders">
@@ -291,6 +342,10 @@
       <div class="palette"></div>
       <h2>CSS Variables</h2>
       <div class="css-rules"></div>
+      <p class="note">
+        The samples below have been built assuming the default settings above.
+        If you've made a lot of changes they might not make sense anymore.
+      </p>
       <h2>Monochrome</h2>
       <div class="samples">
         <div class="sample sample-monochrome sample-theme-a">
@@ -739,6 +794,245 @@
             style="color: var(--color-blue-600)"
             >Link</span
           >
+        </div>
+      </div>
+      <h2>Status Messages</h2>
+      <div class="samples">
+        <div class="sample sample-status sample-theme-a">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-purple-950);
+              border-color: var(--color-purple-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-purple-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-purple-200)"
+                >Primary</span
+              >
+              <span
+                class="sample-status-description"
+                style="color: var(--color-purple-100)"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-purple-300);
+                  color: var(--color-white);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sample sample-status sample-theme-b">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-earth-900);
+              border-color: var(--color-earth-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-earth-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-earth-200)"
+                >Secondary</span
+              >
+              <span
+                class="sample-status-description"
+                style="color: var(--color-earth-100)"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-earth-300);
+                  color: var(--color-white);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sample sample-status sample-theme-c">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-sky-50);
+              border-color: var(--color-sky-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-sky-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-sky-800)"
+                >Info</span
+              >
+              <span class="sample-status-description"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-sky-700);
+                  color: var(--color-black);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sample sample-status sample-theme-a">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-green-950);
+              border-color: var(--color-green-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-green-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-green-200)"
+                >Success</span
+              >
+              <span
+                class="sample-status-description"
+                style="color: var(--color-green-100)"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-green-300);
+                  color: var(--color-white);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sample sample-status sample-theme-b">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-yellow-950);
+              border-color: var(--color-yellow-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-yellow-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-yellow-200)"
+                >Warning</span
+              >
+              <span
+                class="sample-status-description"
+                style="color: var(--color-yellow-100)"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-yellow-300);
+                  color: var(--color-white);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sample sample-status sample-theme-c">
+          <div
+            class="sample-status-wrapper"
+            style="
+              background-color: var(--color-red-50);
+              border-color: var(--color-red-500);
+            "
+          >
+            <div
+              class="sample-status-icon"
+              style="
+                background-color: var(--color-red-500);
+                color: var(--color-white);
+              "
+            >
+              !
+            </div>
+            <div class="sample-status-body">
+              <span
+                class="sample-status-heading"
+                style="color: var(--color-red-800)"
+                >Danger</span
+              >
+              <span class="sample-status-description"
+                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+              >
+              <button
+                class="sample-status-button"
+                style="
+                  background-color: var(--color-red-700);
+                  color: var(--color-black);
+                "
+              >
+                Action
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
