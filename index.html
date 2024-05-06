@@ -23,13 +23,15 @@
         align-items: center;
       }
 
-      h1 {
+      h1,
+      h2,
+      h3 {
         margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-weight: normal;
       }
 
-      h2 {
-        margin-top: 2rem;
+      nav {
+        margin-top: 1rem;
       }
 
       .config {
@@ -129,6 +131,43 @@
         white-space: pre;
       }
 
+      .samples {
+        margin-top: 1rem;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .sample {
+        min-height: 15rem;
+        min-width: 25rem;
+        padding: 3rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+      .sample-blobs {
+        display: flex;
+        gap: 1rem;
+      }
+      .sample-blob {
+        aspect-ratio: 1;
+        flex: 1 1 auto;
+        border-radius: 50%;
+      }
+      .sample-theme-a {
+        background-color: var(--color-grey-950);
+        color: var(--color-grey-50);
+      }
+      .sample-theme-b {
+        background-color: var(--color-earth-950);
+        color: var(--color-earth-50);
+      }
+      .sample-theme-c {
+        background-color: var(--color-night-50);
+        color: var(--color-night-950);
+      }
+
       .dark-mode {
         background-color: black;
         color: white;
@@ -223,6 +262,372 @@
       <div class="palette"></div>
       <h2>CSS Variables</h2>
       <div class="css-rules"></div>
+      <h2>Monochrome</h2>
+      <div class="samples">
+        <div class="sample sample-monochrome sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-200)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-800)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-monochrome sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-200)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-800)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-monochrome sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-200)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-800)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <h2>Complementary</h2>
+      <div class="samples">
+        <div class="sample sample-complementary sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-purple-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-purple-700)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-green-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-green-700)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-complementary sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-red-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-red-700)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-700)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-complementary sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-gold-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-gold-700)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-300)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-700)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <h2>Split Complementary</h2>
+      <div class="samples">
+        <div class="sample sample-split-complementary sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-pink-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-pink-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-green-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-split-complementary sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-sky-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-split-complementary sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-yellow-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-yellow-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-purple-400)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <h2>Analogous</h2>
+      <div class="samples">
+        <div class="sample sample-analogous sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-purple-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-pink-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-analogous sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-gold-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-yellow-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-analogous sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-sky-400)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <h2>Triadic</h2>
+      <div class="samples">
+        <div class="sample sample-triadic sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-red-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-green-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-triadic sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-600)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-600)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-triadic sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-yellow-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-sky-400)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-pink-400)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <h2>Square</h2>
+      <div class="samples">
+        <div class="sample sample-square sample-theme-a">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-yellow-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-teal-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-violet-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-red-500)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-square sample-theme-b">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-green-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-sky-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-purple-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-orange-500)"
+            ></div>
+          </div>
+        </div>
+        <div class="sample sample-square sample-theme-c">
+          <div class="sample-blobs">
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-aqua-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-blue-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-pink-500)"
+            ></div>
+            <div
+              class="sample-blob"
+              style="background-color: var(--color-gold-500)"
+            ></div>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="module" src="./index.js"></script>
   </body>

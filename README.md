@@ -140,3 +140,6 @@ black and white
 - [Hue Shifting in Pixel Art - BJG](https://www.youtube.com/watch?v=PNtMAxYaGyg)
 - [Oklab color space](https://bottosson.github.io/posts/oklab/)
 - [Oklab implementation](https://github.com/Evercoder/culori/tree/main/src/oklab)
+- [Coolors Visualiser](https://coolors.co/visualizer/)
+- [GoodPalette Visualiser](https://goodpalette.io/)
+- [Realtime Colors Visualiser](https://www.realtimecolors.com/)
