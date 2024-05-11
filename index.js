@@ -235,27 +235,52 @@ function initPalette(element) {
   });
 }
 
+const toP3 = culori.toGamut("p3");
+const toRec2020 = culori.toGamut("rec2020");
+
 const cssRules = document.querySelector(".css-rules");
 function buildCssVariables(palette) {
   const variables = [
-    ["--color-black", "rgb(0, 0, 0)"],
-    ["--color-white", "rgb(255, 255, 255)"],
+    ["--color-black", "rgb(0, 0, 0)", "rgb(0, 0, 0)", "rgb(0, 0, 0)"],
+    [
+      "--color-white",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+      "rgb(255, 255, 255)",
+    ],
   ].concat(
     palette.colors.flatMap((color) => {
       return color.tints.map((tint) => {
         const name = `--color-${color.name}-${tint.label}`;
-        const value = culori.formatRgb(tint.culori);
-        return [name, value];
+        const valueSrgb = culori.formatRgb(tint.culori);
+        const valueP3 = culori.formatCss(toP3(tint.culori));
+        const valueRec2020 = culori.formatCss(toRec2020(tint.culori));
+        return [name, valueSrgb, valueP3, valueRec2020];
       });
     })
   );
   let list = "";
-  variables.forEach(([name, value]) => {
-    document.documentElement.style.setProperty(name, value);
-    list += `  ${name}: ${value};\n`;
+  let listP3 = "";
+  let listRec2020 = "";
+  variables.forEach(([name, valueSrgb, valueP3, valueRec2020]) => {
+    document.documentElement.style.setProperty(name, valueSrgb);
+    list += `  ${name}: ${valueSrgb};\n`;
+    listP3 += `    ${name}: ${valueP3};\n`;
+    listRec2020 += `    ${name}: ${valueRec2020};\n`;
   });
   cssRules.innerText = `:root {
-${list}}`;
+${list}}
+
+@media (color-gamut: p3) {
+  :root {
+${listP3}  }
+}
+
+@media (color-gamut: rec2020) {
+  :root {
+${listRec2020}  }
+}
+`;
 }
 
 function initToggles() {
